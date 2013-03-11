@@ -16,10 +16,6 @@ void init_Zones (int **M, Zones *newZone) {
   //newZone = (Zones *) malloc(sizeof(Zones));
   //fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
 
-  //if(newZone == NULL)
-  //{
-  //	exit(EXIT_FAILURE);
-  //}
 
   newZone->Lzsg = NULL; //Initialisation a NULL pour test du succes du malloc
   newZone->B = NULL;

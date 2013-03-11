@@ -1,0 +1,8 @@
+\#*\#
+*.o
+Flood
+Pile
+Liste_case
+session.vim
+.emacs.desktop
+*~

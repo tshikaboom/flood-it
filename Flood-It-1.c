@@ -317,7 +317,7 @@ int strategie_aleatoire_rapide(Grille* G, int ** tab, int nbCases, int nbCl)
 
 	fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
 
-	while(taille < (nbCases * nbCases))
+	while(taille < ((nbCases * nbCases)-4))
 	{
 		taille = 0; //initialisation du compteur 
 		r = rand() % nbCl; //Initialisation de la couleur aleatoire € [0;nbCl[
@@ -345,7 +345,7 @@ int strategie_aleatoire_rapide(Grille* G, int ** tab, int nbCases, int nbCl)
 		Grille_attente_touche();
 
 		cpt++;
-		fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
+		fprintf(stderr, "%s %d %d %d\n", __FILE__, __LINE__, taille, nbCases );
 	}
 
 	fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );

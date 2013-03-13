@@ -104,7 +104,7 @@ void colorie_zone_imp(int ** tab, int i, int j, int cl, int* taille, int nbCases
 
   while(! pile_vide(p)) //Tant que la pile n'est pas vide
     {
-
+      Grille_attente_touche();
       e = depile(&p); //On recupere une nouvelle case actuelle
 
       i = e->i; //Memorisation des coordonnes de la couleur actuelle
@@ -117,7 +117,6 @@ void colorie_zone_imp(int ** tab, int i, int j, int cl, int* taille, int nbCases
 	{
 	  //fprintf(stderr, "Panning on going to: i->%d j->%d\n", (i - 1), j);
 	  empile(&p, (i-1), j); //On empile une prochaine case
-
 	}
       if( (j > 0) && (couleurActuelle == tab[i][j-1])) //Au dessus
 	{
@@ -134,8 +133,8 @@ void colorie_zone_imp(int ** tab, int i, int j, int cl, int* taille, int nbCases
 	  //fprintf(stderr, "Panning on going to: i->%d j->%d\n", i, (j + 1));
 	  empile(&p, i, (j+1)); //On empile une prochaine case
 	}
-      if(*taille >450)
-	printf("%d  ", *taille);
+      if(*taille >390 && *taille < 430) 
+       	printf("%d  ", *taille); 
       free(e); //liberation de la case actuelle
       (*taille)++;
     }
@@ -195,16 +194,15 @@ int strategie_aleatoire_imp(Grille* G, int ** tab, int nbCases, int nbCl)
 {
   srand(time(NULL)); //Generation de la graine
   int r, i, j, taille = 0, cpt = 0;
-
-  while(taille < ( (nbCases * nbCases) - 1))
-    {
+  printf("nbCases %d \n", nbCases);
+  while(taille < nbCases * nbCases){
 
       //fprintf(stderr, "-------------- Changement de couleur -------------\n");
 
       //taille = 0; //initialisation du compteur 
       r = rand() % nbCl; //Initialisation de la couleur aleatoire € [0;nbCl[
       colorie_zone_imp(tab, 0, 0, r, &taille, nbCases);	
-
+      printf(" ->%d  ", taille);
       for (i=0;i<nbCases; i++ )
 	{
 	  for (j=0;j<nbCases;j++)
@@ -213,9 +211,9 @@ int strategie_aleatoire_imp(Grille* G, int ** tab, int nbCases, int nbCl)
 	    }
 	}
       Grille_redessine_Grille();
-
+      
       Grille_attente_touche();
-
+      
       cpt++;
     }
 

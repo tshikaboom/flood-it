@@ -11,16 +11,16 @@ void init_Zones (int **M, Zones *newZone) {
   int i, j;
 
   fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
-
-  //Zones *newZone = NULL;
-  //newZone = (Zones *) malloc(sizeof(Zones));
-  //fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
-
+  /*
+  newZone = NULL;
+  newZone = (Zones *) malloc(sizeof(Zones));
+  fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
+  */
 
   newZone->Lzsg = NULL; //Initialisation a NULL pour test du succes du malloc
   newZone->B = NULL;
-
-  newZone->App =  malloc(sizeof(int) * newZone->nbcase);
+  //// AAARGH SEGFAULT C'EST NORMAL
+  newZone->App =  malloc(sizeof(int *) * newZone->nbcase);
   if(newZone->App == NULL)
     {
       fprintf(stderr, "Allocation de App failed!\n");
@@ -28,7 +28,7 @@ void init_Zones (int **M, Zones *newZone) {
     }
   for(i=0; i < newZone->nbcase; i++)
     {
-      (newZone->App)[i] =  malloc(sizeof(int) * newZone->nbcase); 
+      newZone->App[i] =  malloc(sizeof(int) * newZone->nbcase); 
       for(j=0; j < newZone->nbcase; j++)
 	{
 	  newZone->App[i][j] = -2;
@@ -37,7 +37,7 @@ void init_Zones (int **M, Zones *newZone) {
     }
 
   int a, b;
-
+  fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
   for(a=0; a<newZone->nbcase; a++)
     {
       newZone->App[0][a] = -2;
@@ -49,7 +49,7 @@ void init_Zones (int **M, Zones *newZone) {
     printf("\n");
   }
 
-
+  fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
 
   newZone->B = malloc(sizeof(Liste_case *) * newZone->nbcl);
   if(newZone->B == NULL)

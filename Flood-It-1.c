@@ -1,23 +1,22 @@
-#ifndef FLOODIT1
-#define FLOODIT1
-//a
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include "Flood-It-1.h"
 
-int main(int argc,char**argv){
-
-  int nbcase, nbcl, nivdif, graine, i, j, **M, cpt;
+int main(int argc,char**argv)
+{
+  int nbcase, nbcl, nivdif, graine, i, j;
+  int **M;
   Grille *G;
-  clock_t temps_initial, /* Temps initial en micro-secondes */ temps_final;   /* Temps final en micro-secondes */
-  float temps_cpu;     /* Temps total en secondes */ 
+  //  clock_t
+  //    temps_initial, /* Temps initial en micro-secondes */
+  //    temps_final;   /* Temps final en micro-secondes */
+  //  float temps_cpu; /* Temps total en secondes */ 
 
-  if(argc!=5)
-    {
-      printf("usage: %s <nb_de_case nb_de_couleurs niveau_difficulte graine>\n",argv[0]);
-      return 1;
-    }
+  if (argc != 5) {
+    printf("usage: %s <nb_de_case nb_de_couleurs niveau_difficulte graine>\n",argv[0]);
+    return 1;
+  }
 
   //Recuperation des arguments
   sscanf(argv[1], "%d", &nbcase);
@@ -29,12 +28,9 @@ int main(int argc,char**argv){
 
   M=(int **) malloc(sizeof(int*)*nbcase);
   if(M==NULL)
-    {
       exit(EXIT_FAILURE);
-    }
 
-  for (i=0;i<nbcase;i++)
-    {
+  for (i=0;i<nbcase;i++) {
       M[i]=(int*) malloc(sizeof(int)*nbcase);
       if (M[i]==0) printf("OUCH\n");
     }
@@ -43,42 +39,28 @@ int main(int argc,char**argv){
 
 
   /* Affichage de la grille */
-
   Grille_init(nbcase,nbcl, 500,&G);
-
   Grille_ouvre_fenetre(G);
-
   for (i=0;i<nbcase; i++ )
-    {
-      for (j=0;j<nbcase;j++){
-	Grille_chg_case(G,i,j,M[i][j]);
-      }
-    }
-  Grille_redessine_Grille();
+    for (j=0;j<nbcase;j++)
+      Grille_chg_case(G,i,j,M[i][j]);
 
+  Grille_redessine_Grille();
   Grille_attente_touche();
 
 
-  printf("\t\t\t Iterations: %d\n",  strategie_aleatoire_imp(G, M, nbcase, nbcl));
+  //  printf("\t\t\t Iterations: %d\n",  strategie_aleatoire_imp(G, M, nbcase, nbcl));
 
-  fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
+  printf("\t\t\t Iterations: %d\n",  strategie_aleatoire_rec(G, M, nbcase, nbcl));
 
   Grille_redessine_Grille();
-
-  fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
   Grille_attente_touche();
 
   //	while(1);
 
-  fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
   Grille_ferme_fenetre();
 
-  fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
   Grille_free(&G);
-  fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
-
-
-  fprintf(stderr, "%s %d\n\n \t\tFIN DU MAIN!\n\n", __FILE__, __LINE__ );
   return 0;
 }
 
@@ -132,7 +114,7 @@ void colorie_zone_imp(int ** tab, int i, int j, int cl, int* taille, int nbCases
 	  *taille = *taille+1;
 	  matriceIncr[i-1][j] = 1;
 	}
-	  empile(&p, (i-1), j); //On empile une prochaine case
+	empile(&p, (i-1), j); //On empile une prochaine case
 
       }
 	  
@@ -151,7 +133,7 @@ void colorie_zone_imp(int ** tab, int i, int j, int cl, int* taille, int nbCases
 	  matriceIncr[i+1][j] = 1;
 
 	}
-	  empile(&p, (i+1), j); //On empile une prochaine case
+	empile(&p, (i+1), j); //On empile une prochaine case
       }
 	    
       if (j+1 < nbCases && (tab[i][j+1] == couleurActuelle)) { //En dessous
@@ -160,11 +142,11 @@ void colorie_zone_imp(int ** tab, int i, int j, int cl, int* taille, int nbCases
 	  matriceIncr[i][j+1] = 1;
 
 	}
-	  empile(&p, i, (j+1)); //On empile une prochaine case
+	empile(&p, i, (j+1)); //On empile une prochaine case
       }
 
 
-       	printf("fin colorie_imp: taille %d\n", *taille); 
+      printf("fin colorie_imp: taille %d\n", *taille); 
       free(e); //liberation de la case actuelle
 
     }
@@ -228,23 +210,23 @@ int strategie_aleatoire_imp(Grille* G, int ** tab, int nbCases, int nbCl)
   printf("nbCases %d \n", nbCases);
   while(taille < nbCases*nbCases-1){
 
-      //fprintf(stderr, "-------------- Changement de couleur -------------\n");
+    //fprintf(stderr, "-------------- Changement de couleur -------------\n");
 
-      //taille = 0; //initialisation du compteur 
-      r = rand() % nbCl; //Initialisation de la couleur aleatoire € [0;nbCl[
-      colorie_zone_imp(tab, 0, 0, r, &taille, nbCases);	
-      printf(" ->%d  ", taille);
-      for (i=0;i<nbCases; i++ )
-	  for (j=0;j<nbCases ;j++)
-	      Grille_chg_case(G,i,j,tab[i][j]);
+    //taille = 0; //initialisation du compteur 
+    r = rand() % nbCl; //Initialisation de la couleur aleatoire € [0;nbCl[
+    colorie_zone_imp(tab, 0, 0, r, &taille, nbCases);	
+    printf(" ->%d  ", taille);
+    for (i=0;i<nbCases; i++ )
+      for (j=0;j<nbCases ;j++)
+	Grille_chg_case(G,i,j,tab[i][j]);
 
-      Grille_redessine_Grille();
+    Grille_redessine_Grille();
       
-      //  Grille_attente_touche();
+    //  Grille_attente_touche();
       
-      cpt++;
-      Grille_attente_touche();
-    }
+    cpt++;
+    Grille_attente_touche();
+  }
 
   return cpt;
 }
@@ -335,7 +317,7 @@ int strategie_aleatoire_rapide(Grille* G, int ** tab, int nbCases, int nbCl)
 
   return cpt;
 }
-#endif
+
 
 
 //Zone de commentaire inutiles

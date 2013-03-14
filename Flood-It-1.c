@@ -49,10 +49,72 @@ int main(int argc,char**argv)
   Grille_redessine_Grille();
   Grille_attente_touche();
 
+  int menuchoix;
+  
+  do {
+    printf("Flood-it: menu\n");
+    printf("1 Strategie recursive\n");
+    printf("2 Strategie iterative\n");
+    printf("3 Strategie rapide\n\n");
+    printf("0 Quitter\n");
+    printf(">> ");
+    
+    scanf("%d", &menuchoix);
 
-  //  printf("\t\t\t Iterations: %d\n",  strategie_aleatoire_imp(G, M, nbcase, nbcl));
+    switch (menuchoix) {
+    case 1:
+      Gene_instance_genere_matrice(nbcase, nbcl, nivdif, graine, M);
+      Grille_init(nbcase,nbcl, 500,&G);
+      
+      Grille_ouvre_fenetre(G);
+      for (i=0;i<nbcase; i++ )
+	for (j=0;j<nbcase;j++)
+	  Grille_chg_case(G,i,j,M[i][j]);
 
-  printf("\t\t\t Iterations: %d\n",  strategie_aleatoire_rec(G, M, nbcase, nbcl));
+      printf("%d iterations au total\n",  strategie_aleatoire_rec(G, M, nbcase, nbcl));
+      Grille_redessine_Grille();
+      Grille_attente_touche();
+      Grille_ferme_fenetre();
+
+      Grille_free(&G);
+      break;
+    case 2:
+            Gene_instance_genere_matrice(nbcase, nbcl, nivdif, graine, M);
+      Grille_init(nbcase,nbcl, 500,&G);
+      
+      Grille_ouvre_fenetre(G);
+      for (i=0;i<nbcase; i++ )
+	for (j=0;j<nbcase;j++)
+	  Grille_chg_case(G,i,j,M[i][j]);
+      printf("%d iterations au total\n",  strategie_aleatoire_imp(G, M, nbcase, nbcl));
+      Grille_redessine_Grille();
+      Grille_attente_touche();
+      Grille_ferme_fenetre();
+
+      Grille_free(&G);
+      break;
+    case 3:
+      Gene_instance_genere_matrice(nbcase, nbcl, nivdif, graine, M);
+      Grille_init(nbcase,nbcl, 500,&G);
+      
+      Grille_ouvre_fenetre(G);
+      for (i=0;i<nbcase; i++ )
+	for (j=0;j<nbcase;j++)
+	  Grille_chg_case(G,i,j,M[i][j]);
+      printf("%d iterations au total\n",  strategie_aleatoire_rapide(G, M, nbcase, nbcl));
+      Grille_redessine_Grille();
+      Grille_attente_touche();
+      Grille_ferme_fenetre();
+
+      Grille_free(&G);
+      break;
+    case 0:
+      break;
+    default:
+      printf("choix?\n\n");
+    }
+  } while (menuchoix < 0 || menuchoix > 3 || menuchoix != 0);
+ 
 
   Grille_redessine_Grille();
   Grille_attente_touche();

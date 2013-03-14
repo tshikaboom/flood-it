@@ -4,17 +4,17 @@
 #include "Pile_case.h"
 
 typedef struct {
-	/* Liste des cases de la zone Zsg */
-	Liste_case * Lzsg ;
-	/* Tableau de listes de cases de la bordure*/
-	Liste_case ** B ;
-	/* Tableau a double entree des appartenances */
-	int ** App ;
-	/* nombre de cases */
-	int nbcase ;
-	/* nombre de couleurs */
-	int nbcl ;
-} Zones ;
+  /* Liste des cases de la zone Zsg */
+  Liste_case *Lzsg;
+  /* Tableau de listes de cases de la bordure*/
+  Liste_case **B;
+  /* Tableau a double entree des appartenances */
+  int **App;
+  /* nombre de cases */
+  int nbcase;
+  /* nombre de couleurs */
+  int nbcl;
+} Zones;
 
 
 //Renvoie une nouvelle Zone et teste le succes des allocations

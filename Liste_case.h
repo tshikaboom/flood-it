@@ -1,5 +1,5 @@
-#ifndef LISTECASEH
-#define LISTECASEH
+#ifndef LISTE_CASE_H
+#define LISTE_CASE_H
 
 typedef struct Liste_C{
   int i;

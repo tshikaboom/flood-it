@@ -90,52 +90,77 @@ void colorie_zone_imp(int ** tab, int i, int j, int cl, int* taille, int nbCases
 {
   Pile p; //Pile des cases a modifier
   init_pile(&p);
-
+  int **matriceIncr; // matrice servant a incrementer la taille
+  int compteur, compteur2;
   Element *e = NULL; //Case actuelle
 
   int couleurActuelle = tab[i][j]; //Memorisation de la couleur avant changement
 
-  printf("debut colorie_imp: taille %d\n", *taille);
-  if(cl == couleurActuelle) //Evite les boucles infinies si la case a deja la couleur demandee
-    {
-      return;
-    }
+  matriceIncr = (int **) malloc(nbCases*sizeof(int *));
+  for (compteur=0; compteur<nbCases; compteur++)
+    matriceIncr[compteur] = (int *) malloc(nbCases * sizeof(int));
+
+
+  for (compteur=0; compteur<nbCases; compteur++)
+    for (compteur2=0; compteur2<nbCases; compteur2++)
+      matriceIncr[compteur][compteur2] = 0;
+  
+  printf("wat?\n");  
+  printf("debut colorie_imp: taille %d etc\n", *taille);
+
+  //Evite les boucles infinies si la case a deja la couleur demandee
+  if (cl == couleurActuelle)
+    return;
 
   empile(&p, i , j); //Avant d'entammer la boucle empilement de la premiere case
+  matriceIncr[i][j] = 1;
+  *taille = *taille + 1;
+
   *taille = 0;
+  printf("nbcases au carre: %d\n", nbCases*nbCases);
   while(! pile_vide(p)) //Tant que la pile n'est pas vide
     {
-
-      //      Grille_attente_touche();
       e = depile(&p); //On recupere une nouvelle case actuelle
 
       i = e->i; //Memorisation des coordonnes de la couleur actuelle
       j = e->j;
-      
       tab[i][j] = cl; //Changement de la couleur de l'element actuel
-      printf("enne incr: taille %d\n", *taille);
 
-      printf("peale incr: taille %d\n", *taille);
-      
       //Verification des couleurs des cases environnantes
-      if (i-1 > 0 && (couleurActuelle == tab[i-1][j])) { //A gauche
-	  empile(&p, (i-1), j); //On empile une prochaine case
+      if (i-1 >= 0 && (couleurActuelle == tab[i-1][j])) { //A gauche
+	if (matriceIncr[i-1][j] == 0) {
 	  *taille = *taille+1;
+	  matriceIncr[i-1][j] = 1;
+	}
+	  empile(&p, (i-1), j); //On empile une prochaine case
+
       }
 	  
-      if (j-1 > 0 && (couleurActuelle == tab[i][j-1])) { //Au dessus
-	  empile(&p, i, (j - 1)); //On empile une prochaine case
-	        *taille = *taille+1;
+      if (j-1 >= 0 && (couleurActuelle == tab[i][j-1])) { //Au dessus
+	if (matriceIncr[i][j-1] == 0) {
+	  *taille = *taille+1;
+	  matriceIncr[i][j-1] = 1;
+
+	}
+	empile(&p, i, (j - 1)); //On empile une prochaine case
       }
 		
       if (i+1 < nbCases && (tab[i+1][j] == couleurActuelle)) { // A droite
+	if (matriceIncr[i+1][j] == 0) {
+	  *taille = *taille+1;
+	  matriceIncr[i+1][j] = 1;
+
+	}
 	  empile(&p, (i+1), j); //On empile une prochaine case
-            *taille = *taille+1;
       }
 	    
       if (j+1 < nbCases && (tab[i][j+1] == couleurActuelle)) { //En dessous
+	if (matriceIncr[i][j+1] == 0) {
+	  *taille = *taille+1;
+	  matriceIncr[i][j+1] = 1;
+
+	}
 	  empile(&p, i, (j+1)); //On empile une prochaine case
-            *taille = *taille+1;
       }
 
 
@@ -201,7 +226,7 @@ int strategie_aleatoire_imp(Grille* G, int ** tab, int nbCases, int nbCl)
   srand(time(NULL)); //Generation de la graine
   int r, i, j, taille = 0, cpt = 0;
   printf("nbCases %d \n", nbCases);
-  while(taille < nbCases*nbCases){
+  while(taille < nbCases*nbCases-1){
 
       //fprintf(stderr, "-------------- Changement de couleur -------------\n");
 

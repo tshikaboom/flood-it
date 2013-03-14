@@ -6,13 +6,13 @@
 
 void colorie_zone_imp(int ** tab, int i, int j, int cl, int* taille, int nbCases)
 {
-  Pile p; //Pile des cases a modifier
+  Pile p; /* Pile des cases a modifier */
   init_pile(&p);
-  int **matriceIncr; // matrice servant a incrementer la taille
+  int **matriceIncr; /* matrice servant a incrementer la taille */
   int compteur, compteur2;
-  Element *e = NULL; //Case actuelle
+  Element *e = NULL; /* Case actuelle */
 
-  int couleurActuelle = tab[i][j]; //Memorisation de la couleur avant changement
+  int couleurActuelle = tab[i][j]; /* Memorisation de la couleur avant changement */
 
   matriceIncr = (int **) malloc(nbCases*sizeof(int *));
   for (compteur=0; compteur<nbCases; compteur++)
@@ -26,64 +26,64 @@ void colorie_zone_imp(int ** tab, int i, int j, int cl, int* taille, int nbCases
   printf("wat?\n");  
   printf("debut colorie_imp: taille %d etc\n", *taille);
 
-  //Evite les boucles infinies si la case a deja la couleur demandee
+  /* Evite les boucles infinies si la case a deja la couleur demandee */
   if (cl == couleurActuelle)
     return;
 
-  empile(&p, i , j); //Avant d'entammer la boucle empilement de la premiere case
+  empile(&p, i , j); /* Avant d'entamer la boucle empilement de la premiere case */
   matriceIncr[i][j] = 1;
   *taille = *taille + 1;
 
   *taille = 0;
   printf("nbcases au carre: %d\n", nbCases*nbCases);
-  while(! pile_vide(p)) //Tant que la pile n'est pas vide
+  while(! pile_vide(p)) /* Tant que la pile n'est pas vide */
     {
-      e = depile(&p); //On recupere une nouvelle case actuelle
+      e = depile(&p); /* On recupere une nouvelle case actuelle */
 
-      i = e->i; //Memorisation des coordonnes de la couleur actuelle
+      i = e->i; /* Memorisation des coordonnes de la couleur actuelle */
       j = e->j;
-      tab[i][j] = cl; //Changement de la couleur de l'element actuel
+      tab[i][j] = cl; /* Changement de la couleur de l'element actuel */
 
-      //Verification des couleurs des cases environnantes
-      if (i-1 >= 0 && (couleurActuelle == tab[i-1][j])) { //A gauche
+      /* Verification des couleurs des cases environnantes */
+      if (i-1 >= 0 && (couleurActuelle == tab[i-1][j])) { /* A gauche */
 	if (matriceIncr[i-1][j] == 0) {
 	  *taille = *taille+1;
 	  matriceIncr[i-1][j] = 1;
 	}
-	empile(&p, (i-1), j); //On empile une prochaine case
+	empile(&p, (i-1), j); /* On empile une prochaine case */
 
       }
 	  
-      if (j-1 >= 0 && (couleurActuelle == tab[i][j-1])) { //Au dessus
+      if (j-1 >= 0 && (couleurActuelle == tab[i][j-1])) { /* Au dessus */
 	if (matriceIncr[i][j-1] == 0) {
 	  *taille = *taille+1;
 	  matriceIncr[i][j-1] = 1;
 
 	}
-	empile(&p, i, (j - 1)); //On empile une prochaine case
+	empile(&p, i, (j - 1)); /* On empile une prochaine case */
       }
 		
-      if (i+1 < nbCases && (tab[i+1][j] == couleurActuelle)) { // A droite
+      if (i+1 < nbCases && (tab[i+1][j] == couleurActuelle)) { /*  A droite */
 	if (matriceIncr[i+1][j] == 0) {
 	  *taille = *taille+1;
 	  matriceIncr[i+1][j] = 1;
 
 	}
-	empile(&p, (i+1), j); //On empile une prochaine case
+	empile(&p, (i+1), j); /* On empile une prochaine case */
       }
 	    
-      if (j+1 < nbCases && (tab[i][j+1] == couleurActuelle)) { //En dessous
+      if (j+1 < nbCases && (tab[i][j+1] == couleurActuelle)) { /* En dessous */
 	if (matriceIncr[i][j+1] == 0) {
 	  *taille = *taille+1;
 	  matriceIncr[i][j+1] = 1;
 
 	}
-	empile(&p, i, (j+1)); //On empile une prochaine case
+	empile(&p, i, (j+1)); /* On empile une prochaine case */
       }
 
 
       printf("fin colorie_imp: taille %d\n", *taille); 
-      free(e); //liberation de la case actuelle
+      free(e); /* liberation de la case actuelle */
 
     }
 
@@ -92,36 +92,36 @@ void colorie_zone_imp(int ** tab, int i, int j, int cl, int* taille, int nbCases
 
 void colorie_zone_rec(int ** tab, int i, int j, int cl, int* taille, int nbCases)
 {
-  int couleurActuelle = tab[i][j]; //Memorisation de la couleur avant changement
+  int couleurActuelle = tab[i][j]; /* Memorisation de la couleur avant changement */
 
-  //Changement de la couleur avant l'appel recursif pour eviter les boucles infinies
+  /* Changement de la couleur avant l'appel recursif pour eviter les boucles infinies */
 
   tab[i][j] = cl;
 
-  if(cl == couleurActuelle) //Evite les boucles infinies si la case a deja la couleur demandee
+  if(cl == couleurActuelle) /* Evite les boucles infinies si la case a deja la couleur demandee */
     {
       return;
     }
 
-  //Verification des couleurs des cases environnantes
-  if( (i > 0) && (couleurActuelle == tab[i-1][j])) //A gauche
+  /* Verification des couleurs des cases environnantes */
+  if( (i > 0) && (couleurActuelle == tab[i-1][j])) /* a gauche */
     {
       fprintf(stderr, "Going to: i->%d j->%d\n", (i - 1), j);
       colorie_zone_rec(tab, (i-1), j, cl, taille, nbCases);
     }
 
-  if( (j > 0) && (couleurActuelle == tab[i][j-1])) //Au dessus
+  if( (j > 0) && (couleurActuelle == tab[i][j-1])) /* au dessus */
     {
       fprintf(stderr, "Going to: i->%d j->%d\n", i, (j - 1));
       colorie_zone_rec(tab, i, (j-1), cl, taille, nbCases);
     }
-  if( (i < (nbCases - 1)) && (tab[i+1][j] == couleurActuelle)) // A droite
+  if( (i < (nbCases - 1)) && (tab[i+1][j] == couleurActuelle)) /* a droite */
     {
       fprintf(stderr, "Going to: i->%d j->%d\n", (i + 1), j);
       colorie_zone_rec(tab, (i+1), j, cl, taille, nbCases);
     }
 
-  if( (j < (nbCases - 1)) && (tab[i][j+1] == couleurActuelle)) //En dessous
+  if( (j < (nbCases - 1)) && (tab[i][j+1] == couleurActuelle)) /* en dessous */
     {
       fprintf(stderr, "Going to: i->%d j->%d\n", i, (j + 1));
       colorie_zone_rec(tab, i, (j+1), cl, taille, nbCases);
@@ -135,15 +135,13 @@ void colorie_zone_rec(int ** tab, int i, int j, int cl, int* taille, int nbCases
 
 int strategie_aleatoire_imp(Grille* G, int ** tab, int nbCases, int nbCl)
 {
-  srand(time(NULL)); //Generation de la graine
+  srand(time(NULL)); /* Generation de la graine */
   int r, i, j, taille = 0, cpt = 0;
   printf("nbCases %d \n", nbCases);
   while(taille < nbCases*nbCases-1){
 
-    //fprintf(stderr, "-------------- Changement de couleur -------------\n");
 
-    //taille = 0; //initialisation du compteur 
-    r = rand() % nbCl; //Initialisation de la couleur aleatoire € [0;nbCl[
+    r = rand() % nbCl; /* Initialisation de la couleur aleatoire € [0;nbCl[ */
     colorie_zone_imp(tab, 0, 0, r, &taille, nbCases);	
     printf(" ->%d  ", taille);
     for (i=0;i<nbCases; i++ )
@@ -151,8 +149,6 @@ int strategie_aleatoire_imp(Grille* G, int ** tab, int nbCases, int nbCl)
 	Grille_chg_case(G,i,j,tab[i][j]);
 
     Grille_redessine_Grille();
-      
-    //  Grille_attente_touche();
       
     cpt++;
     Grille_attente_touche();
@@ -164,13 +160,13 @@ int strategie_aleatoire_imp(Grille* G, int ** tab, int nbCases, int nbCl)
 
 int strategie_aleatoire_rec(Grille* G, int ** tab, int nbCases, int nbCl)
 {
-  srand(time(NULL)); //Generation de la graine
+  srand(time(NULL)); /* Generation de la graine */
   int r, i, j, taille = 0, cpt = 0;
 
   while(taille < (nbCases * nbCases))
     {
-      taille = 0; //initialisation du compteur 
-      r = rand() % nbCl; //Initialisation de la couleur aleatoire € [0;nbCl[
+      taille = 0; /* initialisation du compteur */
+      r = rand() % nbCl; /* Initialisation de la couleur aleatoire € [0;nbCl[ */
       colorie_zone_rec(tab, 0, 0, r, &taille, nbCases);	
 
       for (i=0;i<nbCases; i++ )
@@ -193,7 +189,7 @@ int strategie_aleatoire_rec(Grille* G, int ** tab, int nbCases, int nbCl)
 
 int strategie_aleatoire_rapide(Grille* G, int ** tab, int nbCases, int nbCl)
 {
-  srand(time(NULL)); //Generation de la graine
+  srand(time(NULL)); /* Generation de la graine */
   int r, i, j, taille = 0, cpt = 0;
 
   Zones z;
@@ -203,15 +199,17 @@ int strategie_aleatoire_rapide(Grille* G, int ** tab, int nbCases, int nbCl)
 
   fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
 
-  while(taille < ((nbCases * nbCases)-4))
-    {
-      taille = 0; //initialisation du compteur 
-      r = rand() % nbCl; //Initialisation de la couleur aleatoire € [0;nbCl[
+  while(taille < ((nbCases * nbCases)-4)) {
 
-      if(r == tab[0][0] || z.B[r] == NULL) //Si la ZSG est deja de cette couleur
-	{//Ou qu'aucune case de la bordure ne l'est
-	  continue; //Evite les iterations inutiles
-	}
+      taille = 0; /* initialisation du compteur */
+      r = rand() % nbCl; /* Initialisation de la couleur aleatoire € [0;nbCl[ */
+
+      
+      /* Si la ZSG est deja de cette couleur
+	 ou qu'aucune case de la bordure ne l'est */      
+      if(r == tab[0][0] || z.B[r] == NULL)	
+	continue; /* Evite les iterations inutiles */
+	
 
       colorieZone(tab, &z, r, &taille);	
       fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
@@ -235,69 +233,11 @@ int strategie_aleatoire_rapide(Grille* G, int ** tab, int nbCases, int nbCl)
     }
 
   fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
-  //detruitListe(z.B); //--> Boucle infinie
-  //z.B = NULL;
+  /* detruitListe(z.B);  --> Boucle infinie */
+  /* z.B = NULL; */
   detruitListe(z.Lzsg);
   z.Lzsg = NULL;
   fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
 
   return cpt;
 }
-
-
-
-//Zone de commentaire inutiles
-
-/*
-  int taille = 0, iterStrategie;
-
-  int coul = M[0][0] == 0? 1 : 0;
-
-  //colorie_zone_rec(M, 0, 0, coul, &taille, nbcase);
-  // iterStrategie = strategie_aleatoire_rec(G, M, nbcase, nbcl); //Strategie recursive
-
-  iterStrategie = strategie_aleatoire_imp(G, M, nbcase, nbcl); //Strategie imperative
-
-  printf("%d Iterations necessaires!\n", iterStrategie);
-
-  for (i=0;i<nbcase; i++ )
-  {
-  for (j=0;j<nbcase;j++){
-  Grille_chg_case(G,i,j,M[i][j]);
-  }
-  }
-*/
-//V=(int **)
-
-
-/*
-  int couleurTest = M[0][0] == 0? 1 : 0;
-
-  fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
-
-  Zones z; 
-  z.nbcase = nbcase; 
-
-  init_Zones(M, &z); 
-
-  fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
-  colorieZone(M, &z, couleurTest, &cpt); 
-  fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
-  aggranditZone(M, &z, couleurTest);	
-  fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
-  //detruitListe(z.B); //--> Boucle infinie
-  //z.B = NULL;
-  //Apres l'ajoute de z-B = NULL dans aggranditZone, l'erreur est que la fenetre ne peut plus se fermer
-  // Erreur de seg a Grille_ferme_fenetre
-  //
-
-  fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
-  detruitListe(z.Lzsg);
-  z.Lzsg = NULL;
-  fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
-
-  //	for(i = 0; i<nbcase; i++)
-  //	{
-  //		free(z.App[i]);
-  //	}
-  */

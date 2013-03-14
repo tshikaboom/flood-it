@@ -10,9 +10,9 @@ int main(int argc,char**argv)
   int **M;
   Grille *G;
   //  clock_t
-  //    temps_initial, /* Temps initial en micro-secondes */
-  //    temps_final;   /* Temps final en micro-secondes */
-  //  float temps_cpu; /* Temps total en secondes */ 
+  //    temps_initial, // Temps initial en micro-secondes
+  //    temps_final;   // Temps final en micro-secondes 
+  //  float temps_cpu; // Temps total en secondes
 
   if (argc != 5) {
     printf("usage: %s <nb_de_case nb_de_couleurs niveau_difficulte graine>\n",argv[0]);

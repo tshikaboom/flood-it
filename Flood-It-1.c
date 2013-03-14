@@ -95,48 +95,53 @@ void colorie_zone_imp(int ** tab, int i, int j, int cl, int* taille, int nbCases
 
   int couleurActuelle = tab[i][j]; //Memorisation de la couleur avant changement
 
+  printf("debut colorie_imp: taille %d\n", *taille);
   if(cl == couleurActuelle) //Evite les boucles infinies si la case a deja la couleur demandee
     {
       return;
     }
 
   empile(&p, i , j); //Avant d'entammer la boucle empilement de la premiere case
-
+  *taille = 0;
   while(! pile_vide(p)) //Tant que la pile n'est pas vide
     {
-      Grille_attente_touche();
+
+      //      Grille_attente_touche();
       e = depile(&p); //On recupere une nouvelle case actuelle
 
       i = e->i; //Memorisation des coordonnes de la couleur actuelle
-      j = e-> j;
-      //Changement de la couleur de l'element actuel
-      tab[i][j] = cl;
+      j = e->j;
+      
+      tab[i][j] = cl; //Changement de la couleur de l'element actuel
+      printf("enne incr: taille %d\n", *taille);
 
+      printf("peale incr: taille %d\n", *taille);
+      
       //Verification des couleurs des cases environnantes
-      if( (i > 0) && (couleurActuelle == tab[i-1][j])) //A gauche
-	{
-	  //fprintf(stderr, "Panning on going to: i->%d j->%d\n", (i - 1), j);
+      if (i-1 > 0 && (couleurActuelle == tab[i-1][j])) { //A gauche
 	  empile(&p, (i-1), j); //On empile une prochaine case
-	}
-      if( (j > 0) && (couleurActuelle == tab[i][j-1])) //Au dessus
-	{
-	  //fprintf(stderr, "Panning on going to: i->%d j->%d\n", i, (j - 1));
+	  *taille = *taille+1;
+      }
+	  
+      if (j-1 > 0 && (couleurActuelle == tab[i][j-1])) { //Au dessus
 	  empile(&p, i, (j - 1)); //On empile une prochaine case
-	}
-      if( (i < (nbCases - 1)) && (tab[i+1][j] == couleurActuelle)) // A droite
-	{
-	  //fprintf(stderr, "Panning on going to: i->%d j->%d\n", (i + 1), j);
+	        *taille = *taille+1;
+      }
+		
+      if (i+1 < nbCases && (tab[i+1][j] == couleurActuelle)) { // A droite
 	  empile(&p, (i+1), j); //On empile une prochaine case
-	}
-      if( (j < (nbCases - 1)) && (tab[i][j+1] == couleurActuelle)) //En dessous
-	{
-	  //fprintf(stderr, "Panning on going to: i->%d j->%d\n", i, (j + 1));
+            *taille = *taille+1;
+      }
+	    
+      if (j+1 < nbCases && (tab[i][j+1] == couleurActuelle)) { //En dessous
 	  empile(&p, i, (j+1)); //On empile une prochaine case
-	}
-      if(*taille >390 && *taille < 430) 
-       	printf("%d  ", *taille); 
+            *taille = *taille+1;
+      }
+
+
+       	printf("fin colorie_imp: taille %d\n", *taille); 
       free(e); //liberation de la case actuelle
-      (*taille)++;
+
     }
 
 }
@@ -187,6 +192,7 @@ void colorie_zone_rec(int ** tab, int i, int j, int cl, int* taille, int nbCases
 
 
 /*	
+
  *	Change aleatoirement la couleur de la premiere case et la zone des cases de sa couleur
  *	args: Matrice, nbCases, nombre de couleurs
  */
@@ -195,7 +201,7 @@ int strategie_aleatoire_imp(Grille* G, int ** tab, int nbCases, int nbCl)
   srand(time(NULL)); //Generation de la graine
   int r, i, j, taille = 0, cpt = 0;
   printf("nbCases %d \n", nbCases);
-  while(taille < nbCases * nbCases){
+  while(taille < nbCases*nbCases){
 
       //fprintf(stderr, "-------------- Changement de couleur -------------\n");
 
@@ -204,17 +210,15 @@ int strategie_aleatoire_imp(Grille* G, int ** tab, int nbCases, int nbCl)
       colorie_zone_imp(tab, 0, 0, r, &taille, nbCases);	
       printf(" ->%d  ", taille);
       for (i=0;i<nbCases; i++ )
-	{
-	  for (j=0;j<nbCases;j++)
-	    {
+	  for (j=0;j<nbCases ;j++)
 	      Grille_chg_case(G,i,j,tab[i][j]);
-	    }
-	}
+
       Grille_redessine_Grille();
       
-      Grille_attente_touche();
+      //  Grille_attente_touche();
       
       cpt++;
+      Grille_attente_touche();
     }
 
   return cpt;

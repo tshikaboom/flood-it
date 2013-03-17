@@ -47,7 +47,7 @@ int main(int argc,char**argv)
       Grille_chg_case(G,i,j,M[i][j]);
 
   Grille_redessine_Grille();
-  Grille_attente_touche();
+  //  Grille_attente_touche();
 
   int menuchoix;
   
@@ -116,14 +116,14 @@ int main(int argc,char**argv)
   } while (menuchoix < 0 || menuchoix > 3 || menuchoix != 0);
  
 
-  Grille_redessine_Grille();
-  Grille_attente_touche();
+  //  Grille_redessine_Grille();
+  //  Grille_attente_touche();
 
   //	while(1);
 
-  Grille_ferme_fenetre();
+  //  Grille_ferme_fenetre();
 
-  Grille_free(&G);
+  //  Grille_free(&G);
   return 0;
 }
 

@@ -1,4 +1,4 @@
-SRC=Zones.c API_Grille.c strategie_coloriage.c Pile_case.c API_Gene_instance.c Liste_case.c Flood-It-1.c 
+SRC=Zones.c API_Grille.c strategie_coloriage.c Pile_case.c API_Gene_instance.c Liste_case.c Flood-It-1.c Graphe_Zones.c
 CFLAGS=-g -Wall
 LDFLAGS=-lSDL
 CC=gcc
@@ -22,10 +22,11 @@ Backup.Flood-It-1.o: Backup.Flood-It-1.c Flood-It-1.h API_Grille.h \
  API_Gene_instance.h Pile_case.h Liste_case.h Zones.h
 Flood-It-1.o: Flood-It-1.c strategie_coloriage.h Flood-It-1.h \
  API_Grille.h API_Gene_instance.h Pile_case.h Liste_case.h Zones.h
+Graphe_Zones.o: Graphe_Zones.c Liste_case.h Zones.h Pile_case.h \
+ Graphe_Zones.h
 Liste_case.o: Liste_case.c Liste_case.h
-main.o: main.c Pile_case.h
 Pile_case.o: Pile_case.c Pile_case.h
-strategie-coloriage.o: strategie-coloriage.c strategie_coloriage.h \
+Zones.o: Zones.c Liste_case.h Zones.h Pile_case.h
+strategie_coloriage.o: strategie_coloriage.c strategie_coloriage.h \
  Flood-It-1.h API_Grille.h API_Gene_instance.h Pile_case.h Liste_case.h \
  Zones.h
-Zones.o: Zones.c Liste_case.h Zones.h Pile_case.h

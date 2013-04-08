@@ -73,7 +73,7 @@ int adjacent(Sommet *s1, Sommet *s2)
   return bool;
 }
 
-void trouve_zone_Graphe(int** M, int nbCases, Graphe_Zone G)
+void cree_graphe_zone(int** M, int nbCases, Graphe_Zone G)
 {
   int i, j;
 
@@ -82,7 +82,9 @@ void trouve_zone_Graphe(int** M, int nbCases, Graphe_Zone G)
       for(j = 0; j < nbCases; j++)
 	{
 	  if(G->mat[i][j] == NULL){
-	    Sommet s = malloc(sizeof(Sommet)); //Somet vide
+	    Sommet s = malloc(sizeof(Sommet)); //Sommet vide pense a tout initaliser
+	    s.nbcase_som = 0;
+	    s.cases->next = NULL;
 	    trouve_zone(M, i, j, &s, G, nbCases);
 	  }
 	}

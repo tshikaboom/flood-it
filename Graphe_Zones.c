@@ -117,7 +117,7 @@ void trouve_zone(int **M, int i, int j, Sommet *s, Graphe_zone *G, int nbCases)
     
     if ((e->j+1 < nbCases) &&
 	(M[e->i][e->j] == s->cl) &&
-	(!existePile(&p, e->i, e->j+1)) &&
+	(!pile_existe(&p, e->i, e->j+1)) &&
 	(!liste_existe(s->cases, e->i, e->j+1))) {
       liste_ajoute(s->cases, e->i, e->j+1); // Ajout de la case a la liste des membres de la zone
       s->nbcase_som++; // Incr du compteur de zone
@@ -126,7 +126,7 @@ void trouve_zone(int **M, int i, int j, Sommet *s, Graphe_zone *G, int nbCases)
   
     if ((e->j-1 >= 0) &&
 	(M[e->i][e->j] == s->cl) &&
-	(!existePile(&p, e->i, e->j+1)) &&
+	(!pile_existe(&p, e->i, e->j+1)) &&
 	(!liste_existe(s->cases, e->i, e->j-1))) {
       liste_ajoute(s->cases, e->i, e->j-1);
       s->nbcase_som++;
@@ -135,7 +135,7 @@ void trouve_zone(int **M, int i, int j, Sommet *s, Graphe_zone *G, int nbCases)
 
     if ((e->i+1 < nbCases) &&
 	(M[e->i][e->j] == s->cl) &&
-	(!existePile(&p, e->i, e->j+1)) &&
+	(!pile_existe(&p, e->i, e->j+1)) &&
 	(!liste_existe(s->cases, e->i+1, e->j))) {
       liste_ajoute(s->cases, e->i+1, e->j);
       s->nbcase_som++;
@@ -143,7 +143,7 @@ void trouve_zone(int **M, int i, int j, Sommet *s, Graphe_zone *G, int nbCases)
     }
 
     if ((e->i-1 >= 0) && (M[e->i][e->j] == s->cl) &&
-	(!existePile(&p, e->i, e->j+1)) &&
+	(!pile_existe(&p, e->i, e->j+1)) &&
 	(!liste_existe(s->cases, e->i-1, e->j))) {
       liste_ajoute((s->cases), e->i-1, e->j);
       s->nbcase_som++;

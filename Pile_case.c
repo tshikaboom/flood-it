@@ -36,7 +36,7 @@ Element* depile(Pile *p)
 }
 
 //Rend vrai si l'element existe
-int existePile(Pile *l, int i, int j)
+int pile_existe(Pile *l, int i, int j)
 {
   Element *elem = l->e;
   while (elem != NULL) {

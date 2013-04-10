@@ -73,25 +73,26 @@ int adjacent(Sommet *s1, Sommet *s2)
   return bool;
 }
 
-void cree_graphe_zone(int** M, int nbCases, Graphe_Zone G)
+void cree_graphe_zone(int** M, int nbCases, Graphe_zone *G)
 {
   int i, j;
+  Sommet *s = NULL;
 
   for(i = 0; i < nbCases; i++)
     {
       for(j = 0; j < nbCases; j++)
 	{
 	  if(G->mat[i][j] == NULL){
-	    Sommet s = malloc(sizeof(Sommet)); //Sommet vide pense a tout initaliser
-	    s.nbcase_som = 0;
-	    s.cases->next = NULL;
-	    trouve_zone(M, i, j, &s, G, nbCases);
+	    s = malloc(sizeof(Sommet)); //Sommet vide pense a tout initaliser
+	    s->nbcase_som = 0;
+	    s->cases->next = NULL;
+	    trouve_zone(M, i, j, s, G, nbCases);
 	  }
 	}
     }
 }
 
-void trouve_zone(int **M, i, j, sommet *s, Graphe_Zone G, int nbCases)
+void trouve_zone(int **M, int i, int j, Sommet *s, Graphe_zone *G, int nbCases)
 {
 
   /* Pile_case pileun; */
@@ -104,48 +105,61 @@ void trouve_zone(int **M, i, j, sommet *s, Graphe_Zone G, int nbCases)
   /* ajouteListe((&s->suiv), i, j); */
 
   s->cl = M[i][j]; //Mise a jour de la couleur de la case
-  detruit_liste_sommet(&(s->sommet_adj)); //Suppresion des membres de la zone
-  s->nbCases = 0;
-  Pile_case p;
+  detruit_liste_sommet(s->sommet_adj); //Suppresion des membres de la zone
+  s->nbcase_som = 0;
+
+  Pile p;
   init_pile(&p);
+  
   empile(&p, i, j); //On empile la premiere case
   
-  while(! liste_vide(&p))
+  while(! pile_vide(p))
     {
-      Element e = depile(&p);
+      Element *e = depile(&p);
       int i = e->i, j = e->j; //On depile et recupere l'elem courant
       
-      if(((e->j+1) < nbCases) && (M[e->i][e->j] == s->cl) && ( !existePile(&p, e->i, e->j+1)) && ( !appartient_liste(s->cases, e->i, e->j+1))){
-	ajoute_liste((s->cases), e->i, e->j+1);//Ajout de la case a la liste des membres de la zone
+      if (((e->j+1) < nbCases) &&
+	  (M[e->i][e->j] == s->cl) &&
+	  ( !existePile(&p, e->i, e->j+1)) &&
+	  ( !existe(s->cases, e->i, e->j+1))) {
+	ajouteListe((s->cases), e->i, e->j+1);//Ajout de la case a la liste des membres de la zone
 	s->nbcase_som++; //Incr du compteur de zone
 	empile(&p, e->i, e->j+1); 
       }
   
-      if(((e->j-1) >= 0) && (M[e->i][e->j] == s->cl)  && ( !existePile(&p, e->i, e->j+1))&& ( !appartient_liste(s->cases, e->i, e->j-1))){
-	ajoute_liste((s->cases), e->i, e->j-1);
+      if (((e->j-1) >= 0) &&
+	 (M[e->i][e->j] == s->cl)  &&
+	 (!existePile(&p, e->i, e->j+1)) &&
+	 (!existe(s->cases, e->i, e->j-1))) {
+	ajouteListe((s->cases), e->i, e->j-1);
 	s->nbcase_som++;
 	empile(&p, e->i, e->j-1);
       }
 
-      if(((e->i+1) < nbCases) && (M[e->i][e->j] == s->cl)  && ( !existePile(&p, e->i, e->j+1))&& ( !appartient_liste(s->cases, e->i+1, e->j))){
-	ajoute_liste((s->cases), e->i+1, e->j);
+      if (((e->i+1) < nbCases) &&
+	  (M[e->i][e->j] == s->cl) &&
+	  ( !existePile(&p, e->i, e->j+1)) &&
+	  ( !existe(s->cases, e->i+1, e->j))) {
+	ajouteListe((s->cases), e->i+1, e->j);
 	s->nbcase_som++;
 	empile(&p, e->i+1, e->j);
       }
 
-      if(((e->i-1) >= 0) && (M[e->i][e->j] == s->cl)  && ( !existePile(&p, e->i, e->j+1)) && ( !appartient_liste(s->cases, e->i-1, e->j))){
-	ajoute_liste((s->cases), e->i-1, e->j);
+      if (((e->i-1) >= 0) && (M[e->i][e->j] == s->cl)  &&
+	  ( !existePile(&p, e->i, e->j+1)) &&
+	  ( !existe(s->cases, e->i-1, e->j))) {
+	ajouteListe((s->cases), e->i-1, e->j);
 	s->nbcase_som++;
 	empile(&p, e->i-1, e->j);
       }
 
       //On pointe la case de la matrice de G sur la zone
-      G->matt[i][j] = s;
+      G->mat[i][j] = s;
       G->som++;
 
       free(e);
       
     }
-  free(p);
+  //  free(p);
 
 }

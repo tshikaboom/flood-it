@@ -12,7 +12,7 @@ typedef struct cellule_som {
 struct sommet {
   int num; /* Numero du sommet (sert uniquement a l'affichage) */
   int cl; /* Couleur d'origine du sommet-zone */
-  Liste_case cases; /* Listes des cases du sommet-zone */
+  Liste_case *cases; /* Listes des cases du sommet-zone */
   int nbcase_som; /* Nombre de cases de cette liste */
 
   Cellule_som *sommet_adj; /* Liste des pointeurs sur les sommets adjacents */
@@ -37,6 +37,16 @@ typedef struct graphe_zone {
      a quel sommet appartient une case (i,j) de la grille */
 } Graphe_zone;
 
+Cellule_som *ajoute_liste_sommet(Sommet *ptrsommet, Cellule_som *cell_som);
 
+void detruit_liste_sommet(Cellule_som *cell_som);
+
+void ajoute_voisin(Sommet *s1, Sommet *s2);
+
+int adjacent(Sommet *s1, Sommet *s2);
+
+void cree_graphe_zone(int** M, int nbCases, Graphe_zone *G);
+
+void trouve_zone(int **M, int i, int j, Sommet *s, Graphe_zone *G, int nbCases);
 
 #endif

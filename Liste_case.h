@@ -5,7 +5,7 @@ typedef struct Liste_C{
   int i;
   int j;
   struct Liste_C *next;
-}Liste_case;
+} Liste_case;
 
 /*
  * Initialise une liste vide et rend un pointeur

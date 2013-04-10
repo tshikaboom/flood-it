@@ -99,7 +99,7 @@ void trouve_zone(int **M, int i, int j, Sommet *s, Graphe_zone *G, int nbCases)
   /* s->cl = M[i][j]; */
 
   /* empile(&p, i, j); */
-  /* ajouteListe((&s->suiv), i, j); */
+  /* liste_ajoute((&s->suiv), i, j); */
 
   s->cl = M[i][j]; // Mise a jour de la couleur de la case
   detruit_liste_sommet(s->sommet_adj); // Suppresion des membres de la zone
@@ -118,8 +118,8 @@ void trouve_zone(int **M, int i, int j, Sommet *s, Graphe_zone *G, int nbCases)
     if ((e->j+1 < nbCases) &&
 	(M[e->i][e->j] == s->cl) &&
 	(!existePile(&p, e->i, e->j+1)) &&
-	(!existe(s->cases, e->i, e->j+1))) {
-      ajouteListe(s->cases, e->i, e->j+1); // Ajout de la case a la liste des membres de la zone
+	(!liste_existe(s->cases, e->i, e->j+1))) {
+      liste_ajoute(s->cases, e->i, e->j+1); // Ajout de la case a la liste des membres de la zone
       s->nbcase_som++; // Incr du compteur de zone
       empile(&p, e->i, e->j+1);
     }
@@ -127,8 +127,8 @@ void trouve_zone(int **M, int i, int j, Sommet *s, Graphe_zone *G, int nbCases)
     if ((e->j-1 >= 0) &&
 	(M[e->i][e->j] == s->cl) &&
 	(!existePile(&p, e->i, e->j+1)) &&
-	(!existe(s->cases, e->i, e->j-1))) {
-      ajouteListe(s->cases, e->i, e->j-1);
+	(!liste_existe(s->cases, e->i, e->j-1))) {
+      liste_ajoute(s->cases, e->i, e->j-1);
       s->nbcase_som++;
       empile(&p, e->i, e->j-1);
     }
@@ -136,16 +136,16 @@ void trouve_zone(int **M, int i, int j, Sommet *s, Graphe_zone *G, int nbCases)
     if ((e->i+1 < nbCases) &&
 	(M[e->i][e->j] == s->cl) &&
 	(!existePile(&p, e->i, e->j+1)) &&
-	(!existe(s->cases, e->i+1, e->j))) {
-      ajouteListe(s->cases, e->i+1, e->j);
+	(!liste_existe(s->cases, e->i+1, e->j))) {
+      liste_ajoute(s->cases, e->i+1, e->j);
       s->nbcase_som++;
       empile(&p, e->i+1, e->j);
     }
 
     if ((e->i-1 >= 0) && (M[e->i][e->j] == s->cl) &&
 	(!existePile(&p, e->i, e->j+1)) &&
-	(!existe(s->cases, e->i-1, e->j))) {
-      ajouteListe((s->cases), e->i-1, e->j);
+	(!liste_existe(s->cases, e->i-1, e->j))) {
+      liste_ajoute((s->cases), e->i-1, e->j);
       s->nbcase_som++;
       empile(&p, e->i-1, e->j);
     }

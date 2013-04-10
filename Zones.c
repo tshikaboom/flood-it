@@ -74,7 +74,7 @@ void ajoute_Zsg(Zones *z, int i, int j)
   if (z->App[i][j] != -1) {
 
     /* Remplace la liste par une nouvelle liste contenant la case supplemantaire */
-    z->Lzsg =  ajouteListe(z->Lzsg, i, j); 
+    z->Lzsg =  liste_ajoute(z->Lzsg, i, j); 
 
     /* Remplace la reference a la liste dans le tableau App */
     z->App[i][j] = -1;
@@ -88,7 +88,7 @@ void ajoute_Bordure(Zones *z, int i, int j, int clCase)
       exit(EXIT_FAILURE);
 
   /* Remplace la liste par une nouvelle liste contenant la case supplemantaire */
-  z->B[clCase] =  ajouteListe(z->B[clCase], i, j); 
+  z->B[clCase] =  liste_ajoute(z->B[clCase], i, j); 
 
   /* Remplace la reference a la liste dans le tableau App */
   if (clCase<100)
@@ -180,7 +180,7 @@ void aggranditZone(int ** M, Zones *z, int cl)
     l = l->next;
   }
   
-  detruitListe(z->B[cl]); /* On efface la bordure, on y ajoutera les element de la pile */
+  liste_detruit(z->B[cl]); /* On efface la bordure, on y ajoutera les element de la pile */
   z->B[cl]=NULL;
 
   while(p.e != NULL) {

@@ -233,9 +233,9 @@ int strategie_aleatoire_rapide(Grille* G, int ** tab, int nbCases, int nbCl)
     }
 
   fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
-  /* detruitListe(z.B);  --> Boucle infinie */
+  /* liste_detruit(z.B);  --> Boucle infinie */
   /* z.B = NULL; */
-  detruitListe(z.Lzsg);
+  liste_detruit(z.Lzsg);
   z.Lzsg = NULL;
   fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
 

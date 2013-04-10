@@ -1,7 +1,7 @@
 #ifndef LISTE_CASE_H
 #define LISTE_CASE_H
 
-typedef struct Liste_C{
+typedef struct Liste_C {
   int i;
   int j;
   struct Liste_C *next;
@@ -10,8 +10,7 @@ typedef struct Liste_C{
 /*
  * Initialise une liste vide et rend un pointeur
  */
-Liste_case *init_liste();
-
+Liste_case *liste_init();
 
 /*
  * Rend vrai si la liste est vide
@@ -22,28 +21,28 @@ int liste_vide(Liste_case *l);
  * Ajoute un element qui contient les coordonnes i et j suivi de l'ancienne liste
  *  a une nouvelle liste et la renvoie
  */
-Liste_case* ajouteListe(Liste_case *oldListe, int i, int j);
+Liste_case* liste_ajoute(Liste_case *oldListe, int i, int j);
 
 /*
  * Libere tous les element de la liste
  */
-void detruitListe(Liste_case *l);
+void liste_detruit(Liste_case *l);
 
 /*
  * Affiche le contenu de la liste en arg
  */
-void afficheListe(Liste_case *L);
+void liste_affiche(Liste_case *L);
 
 /*
  * Rend vrai si l'element existe
  */
-int existe(Liste_case *l, int i,int j);
+int liste_existe(Liste_case *l, int i,int j);
 
 
 /*
  * Copie une premiere liste dans une deuxieme liste
  * new: pointeur de pointeur vers liste pour modifier la nouvelle liste
  */
-void copyList(Liste_case *old, Liste_case **new);
+void liste_copy(Liste_case *old, Liste_case **new);
 
 #endif

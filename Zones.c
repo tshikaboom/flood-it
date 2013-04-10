@@ -109,7 +109,7 @@ int appartient_Bordure_coord(Zones *z, int i, int j)
 int appartient_Zsg(Zones *z, int i, int j)
 {
   /* Si la ref dans App est egale a -1, (i,j) est presente dans la Zsg */
-  printf("App:\t%d\n", z->App[i][j]);
+//  printf("App:\t%d\n", z->App[i][j]);
   return (z->App[i][j] == -1);
 }
 

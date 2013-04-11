@@ -1,6 +1,8 @@
 #ifndef GRAPHE_ZONES_H
 #define GRAPHE_ZONES_H
 
+#include <assert.h>
+
 typedef struct sommet Sommet;
 
 /* Element d'une liste de Sommets */

@@ -31,7 +31,7 @@ void detruit_liste_sommet(Cellule_som *cell_som)
   }
 }
 
-
+//Ajoute les deux sommets dans leurs listes d'adjacence respectives
 void ajoute_voisin(Sommet *s1, Sommet *s2)
 {
   s1->sommet_adj = ajoute_liste_sommet(s2, s1->sommet_adj);
@@ -76,16 +76,43 @@ int adjacent(Sommet *s1, Sommet *s2)
 void cree_graphe_zone(int** M, int nbCases, Graphe_zone *G)
 {
   int i, j;
-  Sommet *s = NULL;
+  Sommet *s = NULL, *l = NULL;
+  Cellule_som *l = NULL;
 
   for (i=0; i<nbCases; i++)
       for (j=0; j<nbCases; j++)
 	  if (G->mat[i][j] == NULL) {
-	    s = malloc(sizeof(Sommet)); //Sommet vide pense a tout initaliser
+	    s = malloc(sizeof(Sommet)); //Sommet vide penser a tout initaliser
 	    s->nbcase_som = 0;
 	    s->cases->next = NULL;
+	    s->sommet_adj = NULL;
+
+	    (G->nbsom)++;
+
+	    l = malloc(sizeof(Cellule_som)); //Chainage des Sommets du graphe
+	    assert(l != NULL);
+	    l->suiv = G->som;
+	    G->som = l;
+	    l=NULL;
+
 	    trouve_zone(M, i, j, s, G, nbCases);
 	  }
+
+  for( i=0; i < nbCases; i++)
+  {
+	  for(j=0; j < (nbCases - 1); j++)
+	  {
+		  s = G->mat[i][j];
+		  l = G->mat[i][j+1];
+		  if( (s == l) && (adjacent(s, l) != 0) ) 
+		  {
+			continue;
+		  }
+
+		  //Si les sommets sont diff et qu'ils ne sont pas deja adjacents
+		  ajoute_voisin(s, l);
+	  }
+  }
 }
 
 void trouve_zone(int **M, int i, int j, Sommet *s, Graphe_zone *G, int nbCases)

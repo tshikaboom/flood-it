@@ -76,7 +76,7 @@ int adjacent(Sommet *s1, Sommet *s2)
 void cree_graphe_zone(int** M, int nbCases, Graphe_zone *G)
 {
   int i, j;
-  Sommet *s = NULL, *l = NULL;
+  Sommet *s = NULL, *s2 = NULL;
   Cellule_som *l = NULL;
 
   for (i=0; i<nbCases; i++)
@@ -102,15 +102,15 @@ void cree_graphe_zone(int** M, int nbCases, Graphe_zone *G)
   {
 	  for(j=0; j < (nbCases - 1); j++)
 	  {
-		  s = G->mat[i][j];
-		  l = G->mat[i][j+1];
-		  if( (s == l) && (adjacent(s, l) != 0) ) 
+		  s = (G->mat)[i][j];
+		  s2 = (G->mat)[i][j+1];
+		  if( (s == s2) || (adjacent(s, s2) != 0))
 		  {
 			continue;
 		  }
 
 		  //Si les sommets sont diff et qu'ils ne sont pas deja adjacents
-		  ajoute_voisin(s, l);
+		  ajoute_voisin(s, s2);
 	  }
   }
 }

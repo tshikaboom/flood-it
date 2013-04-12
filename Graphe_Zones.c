@@ -100,7 +100,8 @@ void cree_graphe_zone(int** M, int nbCases, Graphe_zone *G)
 
   for( i=0; i < nbCases; i++)
   {
-	  for(j=0; j < (nbCases - 1); j++)
+	  for(j=0; j < (nbCases - 1); j++) //Si deux cases adjacentes de la matrice pointent vers des Sommets
+ //differents qui ne sont pas deja adjacents alors une relation d'adjacences est ajoutée. Sinon, on passe aux cases suivantes
 	  {
 		  s = (G->mat)[i][j];
 		  s2 = (G->mat)[i][j+1];

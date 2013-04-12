@@ -1,6 +1,3 @@
-#ifndef ZONESC
-#define ZONESC
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "Liste_case.h"
@@ -240,4 +237,3 @@ void aggranditZone(int ** M, Zones *z, int cl)
 
 }
 
-#endif 

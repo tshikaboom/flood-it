@@ -79,10 +79,11 @@ void cree_graphe_zone(int** M, int nbCases, Graphe_zone *G)
   Sommet *s = NULL, *s2 = NULL;
   Cellule_som *l = NULL;
 
+  // allocation des sommets de G
   for (i=0; i<nbCases; i++)
       for (j=0; j<nbCases; j++)
 	  if (G->mat[i][j] == NULL) {
-	    s = malloc(sizeof(Sommet)); //Sommet vide penser a tout initaliser
+	    s = malloc(sizeof(Sommet)); // initalisation d'un sommet vide
 	    s->nbcase_som = 0;
 	    s->cases->next = NULL;
 	    s->sommet_adj = NULL;
@@ -95,25 +96,29 @@ void cree_graphe_zone(int** M, int nbCases, Graphe_zone *G)
 	    G->som = l;
 	    l=NULL;
 
+	    // on remplit les sommets en appelant trouve_zone
 	    trouve_zone(M, i, j, s, G, nbCases);
 	  }
 
-  for( i=0; i < nbCases; i++)
-  {
-	  for(j=0; j < (nbCases - 1); j++) //Si deux cases adjacentes de la matrice pointent vers des Sommets
- //differents qui ne sont pas deja adjacents alors une relation d'adjacences est ajoutée. Sinon, on passe aux cases suivantes
-	  {
-		  s = (G->mat)[i][j];
-		  s2 = (G->mat)[i][j+1];
-		  if( (s == s2) || (adjacent(s, s2) != 0))
-		  {
-			continue;
-		  }
 
-		  //Si les sommets sont diff et qu'ils ne sont pas deja adjacents
-		  ajoute_voisin(s, s2);
-	  }
-  }
+  // recherche des sommets adjacents
+  for (i=0; i < nbCases; i++)
+    {
+      for(j=0; j < (nbCases - 1); j++)
+	/* Si deux cases adjacentes de la matrice pointent vers des Sommets
+	 * differents qui ne sont pas deja adjacents alors une relation
+	 * d'adjacence est ajoutée. Sinon, on passe aux cases suivantes
+	 */
+	{
+	  s = G->mat[i][j];
+	  s2 = G->mat[i][j+1];
+	  if (s == s2 || adjacent(s, s2) != 0)
+	      continue;
+
+	  //Si les sommets sont diff et qu'ils ne sont pas deja adjacents
+	  ajoute_voisin(s, s2);
+	}
+    }
 }
 
 void trouve_zone(int **M, int i, int j, Sommet *s, Graphe_zone *G, int nbCases)
@@ -188,3 +193,7 @@ void trouve_zone(int **M, int i, int j, Sommet *s, Graphe_zone *G, int nbCases)
   //  free(p);
 
 }
+/*
+void affichage_graphe(Graphe_zone *G)
+{
+*/

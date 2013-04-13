@@ -211,3 +211,33 @@ void affichage_graphe(Graphe_zone *G, int nbCases)
     }
 
 }
+
+Bordure *bordure_init(int nbcl)
+{
+  int i;
+  Bordure *nvbordure;
+
+  // allocation de nvbordure
+  nvbordure = (Bordure *) malloc(sizeof(Bordure));
+  if (!nvbordure) return NULL;
+
+  // allocation du tableau de listes
+  nvbordure->tab = (Cellule_som **) malloc(nbcl*sizeof(Cellule_som *));
+  if (!(nvbordure->tab)) return NULL;
+
+  // initialisation du tableau de listes
+  for (i=0; i<nbcl; i++) nvbordure->tab[i] = NULL;
+
+  // allocation du tableau des tailles de listes
+  nvbordure->taille_liste = (int *) malloc(nbcl*sizeof(int));
+  if (!(nvbordure->taille_liste)) return NULL;
+  
+  // initialisation du tableau des tailles de listes
+  for (i=0; i<nbcl; i++) nvbordure->taille_liste = 0;
+
+
+  nvbordure->nbcl = nbcl;
+
+  return nvbordure;
+
+}

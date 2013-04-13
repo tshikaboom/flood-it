@@ -39,6 +39,14 @@ typedef struct graphe_zone {
      a quel sommet appartient une case (i,j) de la grille */
 } Graphe_zone;
 
+struct s_max_bordure {
+  int nbcl; // nombre de couleurs differentes
+  int **taille_liste; // taille de la liste contenue dans la case [i][j] de tab
+  Cellule_som ***tab; // listes de Cellule_som figurant dans la case [i][j]
+};
+
+typedef struct s_max_bordure Max_Bordure;
+
 Cellule_som *ajoute_liste_sommet(Sommet *ptrsommet, Cellule_som *cell_som);
 
 void detruit_liste_sommet(Cellule_som *cell_som);

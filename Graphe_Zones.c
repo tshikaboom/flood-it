@@ -241,3 +241,18 @@ Bordure *bordure_init(int nbcl)
   return nvbordure;
 
 }
+
+// bool bordure_dans_bordure?
+int sommet_dans_bordure(Cellule_som *sommet, Bordure *bordure)
+{
+  Cellule_som *parcours = bordure->tab[sommet->sommet->cl];
+
+  while (parcours) {
+    if (parcours->sommet->num == sommet->sommet->num) return 1; // on a trouve
+    parcours = parcours->suiv;
+  }
+
+
+  // on n'a rien trouve
+  return 0;
+}

@@ -63,4 +63,6 @@ void affichage_graphe(Graphe_zone *G, int nbCases);
 
 Bordure *bordure_init(int nbcl);
 
+int sommet_dans_bordure(Cellule_som *sommet, Bordure *bordure);
+
 #endif

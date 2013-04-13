@@ -51,4 +51,6 @@ void cree_graphe_zone(int** M, int nbCases, Graphe_zone *G);
 
 void trouve_zone(int **M, int i, int j, Sommet *s, Graphe_zone *G, int nbCases);
 
+void affichage_graphe(Graphe_zone *G, int nbCases);
+
 #endif

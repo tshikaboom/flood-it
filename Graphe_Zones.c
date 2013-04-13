@@ -193,7 +193,21 @@ void trouve_zone(int **M, int i, int j, Sommet *s, Graphe_zone *G, int nbCases)
   //  free(p);
 
 }
-/*
-void affichage_graphe(Graphe_zone *G)
+
+void affichage_graphe(Graphe_zone *G, int nbCases)
 {
-*/
+  int i=0, j=0;
+  Cellule_som *parcours; // sert a parcourir la liste des sommets
+
+  for (i=0; i<nbCases; i++)
+    for (j=0; j<nbCases; j++) {
+      parcours = G->mat[i][j]->sommet_adj;
+      printf("Dans le sommet [%d][%d], on a les noeuds ", i, j);
+      while (parcours) {
+	printf("%d ", parcours->sommet->num);
+	parcours = parcours->suiv;
+      }
+      printf("\n");
+    }
+
+}

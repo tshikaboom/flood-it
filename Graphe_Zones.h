@@ -41,8 +41,8 @@ typedef struct graphe_zone {
 
 struct s_max_bordure {
   int nbcl; // nombre de couleurs differentes
-  int **taille_liste; // taille de la liste contenue dans la case [i][j] de tab
-  Cellule_som ***tab; // listes de Cellule_som figurant dans la case [i][j]
+  int *taille_liste; // taille de la liste contenue dans la case [i][j] de tab
+  Cellule_som **tab; // tableau de listes de Cellule_som figurant dans la case [i][j]
 };
 
 typedef struct s_max_bordure Max_Bordure;

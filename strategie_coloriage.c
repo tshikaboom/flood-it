@@ -241,3 +241,34 @@ int strategie_aleatoire_rapide(Grille* G, int ** tab, int nbCases, int nbCl)
 
   return cpt;
 }
+
+int StrategieLarge(Grille* Grille, int **M, int nbCases)
+{
+	Graphe_zone G;
+	Cellule_som *path = NULL;
+	int i, couleurs[100] = {0};
+	int cpt = 0;
+
+
+	G.som = NULL;
+	G.nbsom = 0;
+	G.mat = NULL;
+	G.mat = malloc(sizeof(Sommet*) * nbCases * nbCases);
+	assert(G.mat != NULL);	
+
+	cree_graphe_zone(M, nbCases, &G);
+	path = plusCourtChemin(&G, nbCases);
+
+	for(i = 0; path != NULL; i++)
+	{
+		couleurs[i] = (path->sommet)->cl;	
+	}
+	for(; i >= 0; i--, cpt++)
+	{
+	// Basculement dans couleurs[i] de la bordure ZSG	
+	}
+
+
+	//Appel de max Bordure + cpt
+	return cpt;
+}

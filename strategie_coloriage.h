@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "Flood-It-1.h"
+#include "Graphe_Zones.h"
 
 
 /*
@@ -43,6 +44,13 @@ int strategie_aleatoire_rec(Grille* G, int ** tab, int nbCases, int nbCl);
  * Rend le nombre d'iterations
  */
 int strategie_aleatoire_rapide(Grille* G, int ** tab, int nbCases, int nbCl);
+
+
+/*
+ *Choix des couleurs qui menent le plus rapidement possible au bord inferieur droit puis 
+ * appel de max-bordure
+ */
+int StrategieLarge(Grille* Grille, int **M, int nbCases);
 
 
 

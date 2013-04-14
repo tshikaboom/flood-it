@@ -65,4 +65,15 @@ Bordure *bordure_init(int nbcl);
 
 int sommet_dans_bordure(Cellule_som *sommet, Bordure *bordure);
 
+
+
+Cellule_som *plusCourtChemin(Graphe_zone *G, int nbCases);
+/* depart = Sommet de depart, case actuelle
+ * destination = Sommet a atteindre
+ * marqueur: indice incremente a chaque nouvelle generation 
+ * chemin = chemin parcourus pour atteindre la destination
+ * retour -> nombre de cases dans le chemin
+ */
+Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, Sommet *destination, int marqueur, int *distance); 
+
 #endif

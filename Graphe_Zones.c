@@ -256,3 +256,85 @@ int sommet_dans_bordure(Cellule_som *sommet, Bordure *bordure)
   // on n'a rien trouve
   return 0;
 }
+
+Cellule_som *plusCourtChemin(Graphe_zone *G, int nbCases)
+{
+	int i = 0;
+	Sommet *depart = G->mat[0][0], *destination = G->mat[nbCases][nbCases]; 
+	Cellule_som *chemin = ajoute_liste_sommet(depart, NULL);
+	
+	if(adjacent(depart, destination) != 0)
+	{
+		chemin = ajoute_liste_sommet(destination, chemin);
+		return chemin;
+	}
+
+	return recPlusCourt(G, chemin, depart, destination, 1, &i);
+}
+/* depart = Sommet de depart, case actuelle
+ * destination = Sommet a atteindre
+ * marqueur: indice incremente a chaque nouvelle generation 
+ * chemin = chemin parcourus pour atteindre la destination
+ * retour -> nombre de cases dans le chemin
+ */
+Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, Sommet *destination, int marqueur, int *distance)
+{
+	int i = 0, j;
+	Cellule_som *voieMin = NULL, *voieSnd = NULL, *adjListe = depart->sommet_adj;
+
+/*	if(depart == destination)
+	{
+		destination->marque = marqueur;
+		*distance = 1;
+		return ajoute_liste_sommet(destination, chemin);
+	}*/
+	if(adjacent(depart, destination) != 0)
+	{
+		if((destination->marque != 0) && (destination->marque < marqueur )) //Il existe un chemin plus court
+		{
+			*distance = 1000;
+			return NULL;
+		}
+
+		destination->marque = marqueur;
+		depart->marque = marqueur;
+		*distance = 2;
+		return ajoute_liste_sommet(destination, ajoute_liste_sommet(depart, chemin));
+
+	}
+	else
+	{
+		while(adjListe != NULL && i == 0) //Pour le premier tour
+		{
+			if( ((adjListe->sommet)->marque == 0) || ((adjListe->sommet)->marque > marqueur )) 
+			{ //Sommet non visite ou par une generation plus recente de recPlusCourt
+				voieMin = recPlusCourt(G,  ajoute_liste_sommet(depart, chemin), adjListe->sommet, destination, marqueur + 1, &i);
+			}
+			adjListe = adjListe->suiv;
+		}
+		while(adjListe != NULL)
+		{
+			if( ((adjListe->sommet)->marque == 0) || ((adjListe->sommet)->marque > marqueur )) 
+			{
+				voieSnd = recPlusCourt(G,  ajoute_liste_sommet(depart, chemin), adjListe->sommet, destination, marqueur + 1, &j);
+
+				if(j < i) //Le chemin courant est plus court que le dernier chemin le plus court
+				{
+					i = j;
+					voieMin = voieSnd;
+				}
+			}
+			
+			adjListe = adjListe->suiv;
+		}
+	}
+
+		if(voieMin != NULL) //Si on a un resultat valable
+		{
+			*distance = i  + 1;
+			return voieMin;	
+		}else{
+			*distance = 1000;
+			return NULL;
+		}
+}

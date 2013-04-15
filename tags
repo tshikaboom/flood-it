@@ -1,10 +1,13 @@
 App	Zones.h	12
 B	Zones.h	10
-Element	Pile_case.h	14
-Element_pile	Pile_case.h	10
-FLOODIT1	Flood-It-1.c	2
+Bordure	Graphe_Zones.h	48
+Cellule_som	Graphe_Zones.h	12
+Element	Pile_case.h	15
+Element_pile	Pile_case.h	11
 FLOODIT1H	Flood-It-1.h	2
+GRAPHE_ZONES_H	Graphe_Zones.h	2
 Gene_instance_genere_matrice	API_Gene_instance.c	/^void Gene_instance_genere_matrice(int nbcase, int /
+Graphe_zone	Graphe_Zones.h	40
 Grille	API_Grille.h	21
 Grille_attente_touche	API_Grille.c	/^void Grille_attente_touche(){$/
 Grille_chg_case	API_Grille.c	/^void Grille_chg_case(Grille *G, int i, int j, int /
@@ -13,63 +16,94 @@ Grille_free	API_Grille.c	/^void Grille_free(Grille **G){$/
 Grille_init	API_Grille.c	/^void Grille_init(int nbcase, int nbcl, int taille_/
 Grille_ouvre_fenetre	API_Grille.c	/^void Grille_ouvre_fenetre(Grille *G){$/
 Grille_redessine_Grille	API_Grille.c	/^void Grille_redessine_Grille(){$/
-LISTECASEC	Liste_case.c	2
-LISTECASEH	Liste_case.h	2
+LISTE_CASE_H	Liste_case.h	2
 Liste_C	Liste_case.h	4
 Liste_case	Liste_case.h	8
 Lzsg	Zones.h	8
 MBackup.Flood-It-1	Backup.Flood-It-1.c	/^int main(int argc,char**argv){$/
-MFlood-It-1	Flood-It-1.c	/^int main(int argc,char**argv){$/
-Mmain	main.c	/^int main(void)$/
-PILEC	Pile_case.c	2
-PILEH	Pile_case.h	2
-Pile	Pile_case.h	8
+MFlood-It-1	Flood-It-1.c	/^int main(int argc,char**argv)$/
+PILE_CASE_H	Pile_case.h	2
+Pile	Pile_case.h	9
+STRATEGIE_COLORIAGE_H	strategie_coloriage.h	2
+Sommet	Graphe_Zones.h	6
+StrategieLarge	strategie_coloriage.c	/^int StrategieLarge(Grille* Grille, int **M, int nb/
 T_coul	API_Grille.h	19
-ZONESC	Zones.c	2
-ZONESH	Zones.h	2
+ZONES_H	Zones.h	2
 Zones	Zones.h	17
 __API_GENE_INSTANCE__	API_Gene_instance.h	2
 __API_GRILLE__	API_Grille.h	2
-afficheListe	Liste_case.c	/^void afficheListe(Liste_case *L)$/
+adjacent	Graphe_Zones.c	/^int adjacent(Sommet *s1, Sommet *s2)$/
+affichage_graphe	Graphe_Zones.c	/^void affichage_graphe(Graphe_zone *G, int nbCases)/
 aggranditZone	Zones.c	/^void aggranditZone(int ** M, Zones *z, int cl)$/
-ajouteListe	Liste_case.c	/^Liste_case* ajouteListe(Liste_case *oldListe, int /
 ajoute_Bordure	Zones.c	/^void ajoute_Bordure(Zones *z, int i, int j, int cl/
 ajoute_Zsg	Zones.c	/^void ajoute_Zsg(Zones *z, int i, int j)$/
+ajoute_liste_sommet	Graphe_Zones.c	/^Cellule_som *ajoute_liste_sommet(Sommet *ptrsommet/
+ajoute_voisin	Graphe_Zones.c	/^void ajoute_voisin(Sommet *s1, Sommet *s2)$/
 appartient_Bordure	Zones.c	/^int appartient_Bordure(int ** M, Zones *z, int cl)/
 appartient_Bordure_coord	Zones.c	/^int appartient_Bordure_coord(Zones *z, int i, int /
 appartient_Zsg	Zones.c	/^int appartient_Zsg(Zones *z, int i, int j)$/
+bordure_init	Graphe_Zones.c	/^Bordure *bordure_init(int nbcl)$/
 cas_aff	API_Grille.h	14
+cases	Graphe_Zones.h	17
+cellule_som	Graphe_Zones.h	9
+changeCouleurZsg	Graphe_Zones.c	/^void changeCouleurZsg(Graphe_zone *G, int ** M,  i/
+cl	Graphe_Zones.h	16
 colorieZone	Zones.c	/^void colorieZone (int **M, Zones *Z, int cl, int */
-colorie_zone_imp	Flood-It-1.c	/^void colorie_zone_imp(int ** tab, int i, int j, in/
+colorie_zone_imp	strategie_coloriage.c	/^void colorie_zone_imp(int ** tab, int i, int j, in/
 colorie_zone_rec	Backup.Flood-It-1.c	/^void colorie_zone_rec(int ** tab, int i, int j, in/
-colorie_zone_rec	Flood-It-1.c	/^void colorie_zone_rec(int ** tab, int i, int j, in/
-copyList	Liste_case.c	/^void copyList(Liste_case *old, Liste_case **new) \//
+colorie_zone_rec	strategie_coloriage.c	/^void colorie_zone_rec(int ** tab, int i, int j, in/
+cree_graphe_zone	Graphe_Zones.c	/^void cree_graphe_zone(int** M, int nbCases, Graphe/
 depile	Pile_case.c	/^Element* depile(Pile *p)$/
-detruitListe	Liste_case.c	/^void detruitListe(Liste_case *l)$/
-e	Pile_case.h	7
+detruit_liste_sommet	Graphe_Zones.c	/^void detruit_liste_sommet(Cellule_som *cell_som)$/
+e	Pile_case.h	8
 empile	Pile_case.c	/^void empile(Pile *p, int i, int j)$/
-existe	Liste_case.c	/^int existe(Liste_case *l, int i, int j)$/
-existePile	Pile_case.c	/^int existePile(Pile *l, int i,int j)$/
+graphe_zone	Graphe_Zones.h	32
 grille	API_Grille.h	8
 i	Liste_case.h	5
-i	Pile_case.h	11
-init_Zones	Zones.c	/^void init_Zones (int **M, Zones *newZone) {$/
-init_liste	Liste_case.c	/^Liste_case *init_liste()$/
+i	Pile_case.h	12
+init_Zones	Zones.c	/^void init_Zones (int **M, Zones *newZone)$/
 init_pile	Pile_case.c	/^void init_pile(Pile *p)$/
 j	Liste_case.h	6
-j	Pile_case.h	12
+j	Pile_case.h	13
+liste_affiche	Liste_case.c	/^void liste_affiche(Liste_case *L)$/
+liste_ajoute	Liste_case.c	/^Liste_case* liste_ajoute(Liste_case *oldListe, int/
+liste_copy	Liste_case.c	/^void liste_copy(Liste_case *old, Liste_case **new)/
+liste_detruit	Liste_case.c	/^void liste_detruit(Liste_case *l)$/
+liste_existe	Liste_case.c	/^int liste_existe(Liste_case *l, int i, int j)$/
+liste_init	Liste_case.c	/^Liste_case *liste_init()$/
 liste_vide	Liste_case.c	/^int liste_vide(Liste_case *l)$/
+marque	Graphe_Zones.h	23
+mat	Graphe_Zones.h	37
 modulo	API_Grille.h	17
 nbcase	API_Grille.h	10
 nbcase	Zones.h	14
+nbcase_som	Graphe_Zones.h	18
 nbcl	API_Grille.h	11
+nbcl	Graphe_Zones.h	43
 nbcl	Zones.h	16
+nbsom	Graphe_Zones.h	33
 next	Liste_case.h	7
-next	Pile_case.h	13
+next	Pile_case.h	14
+num	Graphe_Zones.h	15
+pere	Graphe_Zones.h	26
+pile_existe	Pile_case.c	/^int pile_existe(Pile *l, int i, int j)$/
 pile_vide	Pile_case.c	/^int pile_vide(Pile p)$/
-strategie_aleatoire_imp	Flood-It-1.c	/^int strategie_aleatoire_imp(Grille* G, int ** tab,/
-strategie_aleatoire_rapide	Flood-It-1.c	/^int strategie_aleatoire_rapide(Grille* G, int ** t/
+plusCourtChemin	Graphe_Zones.c	/^Cellule_som *plusCourtChemin(Graphe_zone *G, int n/
+recPlusCourt	Graphe_Zones.c	/^Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_/
+s_bordure	Graphe_Zones.h	42
+som	Graphe_Zones.h	35
+sommet	Graphe_Zones.h	10
+sommet	Graphe_Zones.h	14
+sommet_adj	Graphe_Zones.h	20
+sommet_dans_bordure	Graphe_Zones.c	/^int sommet_dans_bordure(Cellule_som *sommet, Bordu/
+strategie_aleatoire_imp	strategie_coloriage.c	/^int strategie_aleatoire_imp(Grille* G, int ** tab,/
+strategie_aleatoire_rapide	strategie_coloriage.c	/^int strategie_aleatoire_rapide(Grille* G, int ** t/
 strategie_aleatoire_rec	Backup.Flood-It-1.c	/^int strategie_aleatoire_rec(Grille* G, int ** tab,/
-strategie_aleatoire_rec	Flood-It-1.c	/^int strategie_aleatoire_rec(Grille* G, int ** tab,/
+strategie_aleatoire_rec	strategie_coloriage.c	/^int strategie_aleatoire_rec(Grille* G, int ** tab,/
+suiv	Graphe_Zones.h	11
+tab	Graphe_Zones.h	45
 taille_case	API_Grille.h	16
+taille_liste	Graphe_Zones.h	44
 taille_pixel	API_Grille.h	12
+trouve_zone	Graphe_Zones.c	/^void trouve_zone(int **M, int i, int j, Sommet *s,/
+update_bordure_graphe	Graphe_Zones.c	/^void update_bordure_graphe(Graphe_zone *G, int **M/

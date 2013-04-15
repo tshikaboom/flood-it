@@ -76,4 +76,15 @@ Cellule_som *plusCourtChemin(Graphe_zone *G, int nbCases);
  */
 Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, Sommet *destination, int marqueur, int *distance); 
 
+/*
+ *	Mise a jour de la bordure graphe
+ *	Changement des couleurs et des adjacences des membre du Graphe
+ */
+void update_bordure_graphe(Graphe_zone *G, int **M, int nbCl);
+
+/* On prend un graphe et une couleur
+ *	On change la couleur du sommet de la Zsg
+ *	On parcourt toutes les cases de la Zsg et on leur donne leur nouvelle couleur
+ */
+void changeCouleurZsg(Graphe_zone *G, int ** M,  int cl);
 #endif

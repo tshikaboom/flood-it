@@ -6,6 +6,7 @@
 #include <time.h>
 #include "Flood-It-1.h"
 #include "Graphe_Zones.h"
+#include "assert.h"
 
 
 /*
@@ -54,4 +55,6 @@ int StrategieLarge(Grille* Grille, int **M, int nbCases);
 
 
 
+//Tout est dans le nom
+int maxBordure(Grille *Grille, int **M, int nbCases);
 #endif

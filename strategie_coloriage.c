@@ -272,3 +272,37 @@ int StrategieLarge(Grille* Grille, int **M, int nbCases)
 	//Appel de max Bordure + cpt
 	return cpt;
 }
+
+int maxBordure(Grille *Grille, int **M, int nbCases)
+{
+	//trouve zones
+	// appel update_bordure_graphe
+	//
+	int i , j, cpt = 0;
+	Graphe_zone G;
+	G.nbsom = 0;
+	G.som = NULL;
+
+	G.mat = malloc(sizeof(Sommet*) * nbCases);
+	assert(G.mat != NULL);
+	for(i = 0; i < nbCases; i++)
+	{
+		G.mat[i] = malloc(sizeof(Sommet*) * nbCases);
+		assert(G.mat[i]);
+		for(j = 0; i < nbCases; j++)
+		{
+			G.mat[i][j] = NULL;
+		}
+	}
+	
+	cree_graphe_zone(M, nbCases, &G);
+
+	while(G.nbsom > 0)
+	{
+		
+		update_bordure_graphe(&G, M, Grille->nbcl);
+		cpt++;
+	}
+
+	return cpt;
+}

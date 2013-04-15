@@ -268,8 +268,8 @@ int StrategieLarge(Grille* Grille, int **M, int nbCases)
 	// Basculement dans couleurs[i] de la bordure ZSG	
 	}
 
-
-	//Appel de max Bordure + cpt
+	cpt += maxBordure(Grille, M, nbCases);
+	
 	return cpt;
 }
 

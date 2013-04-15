@@ -197,19 +197,18 @@ int strategie_aleatoire_rapide(Grille* G, int ** tab, int nbCases, int nbCl)
   z.nbcl = nbCl;
   init_Zones(tab, &z); 
 
-  fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
 
   while(taille < ((nbCases * nbCases)-4)) {
 
       taille = 0; /* initialisation du compteur */
       r = rand() % nbCl; /* Initialisation de la couleur aleatoire € [0;nbCl[ */
-
+  
       
       /* Si la ZSG est deja de cette couleur
 	 ou qu'aucune case de la bordure ne l'est */      
       if(r == tab[0][0] || z.B[r] == NULL)	
 	continue; /* Evite les iterations inutiles */
-	
+       
 
       colorieZone(tab, &z, r, &taille);	
       fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );

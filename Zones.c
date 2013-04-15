@@ -35,7 +35,7 @@ void init_Zones (int **M, Zones *newZone)
 
   fprintf(stderr, "%s %d\n", __FILE__, __LINE__ );
 
-  newZone->B = malloc(sizeof(Liste_case *) * newZone->nbcl);
+  newZone->B = (Liste_case **) malloc(sizeof(Liste_case *) * newZone->nbcl);
   if (newZone->B == NULL) {
     fprintf(stderr, "Allocation de B failed!\n");
     exit(EXIT_FAILURE);
@@ -43,7 +43,8 @@ void init_Zones (int **M, Zones *newZone)
   for(i=0; i < newZone->nbcl; i++)
       newZone->B[i] = NULL;
 
-  newZone->Lzsg = (Liste_case *) malloc(sizeof(Liste_case));
+  //  newZone->Lzsg = (Liste_case *) malloc(sizeof(Liste_case));
+  newZone->Lzsg = liste_init();
 
 
   if ( (newZone->Lzsg == NULL) || (newZone->B == NULL))

@@ -277,6 +277,7 @@ Cellule_som *plusCourtChemin(Graphe_zone *G, int nbCases)
  * marqueur: indice incremente a chaque nouvelle generation 
  * chemin = chemin parcourus pour atteindre la destination
  * retour -> nombre de cases dans le chemin
+ * distance: nombre d'etapes pour arriver a la destination
  */
 Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, Sommet *destination, int marqueur, int *distance)
 {
@@ -293,7 +294,7 @@ Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, S
     {
       if((destination->marque != 0) && (destination->marque < marqueur )) //Il existe un chemin plus court
 	{
-	  *distance = 1000;
+	  *distance = 1000; // hmmm..
 	  return NULL;
 	}
 
@@ -301,13 +302,13 @@ Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, S
       depart->marque = marqueur;
       *distance = 2;
       return ajoute_liste_sommet(destination, ajoute_liste_sommet(depart, chemin));
-
     }
   else
     {
-      while(adjListe != NULL && i == 0) //Pour le premier tour
+      while (adjListe != NULL && i == 0) //Pour le premier tour
 	{
-	  if( ((adjListe->sommet)->marque == 0) || ((adjListe->sommet)->marque > marqueur )) 
+	  if ((adjListe->sommet->marque == 0) ||
+	      (adjListe->sommet->marque > marqueur ))
 	    { //Sommet non visite ou par une generation plus recente de recPlusCourt
 	      voieMin = recPlusCourt(G,  ajoute_liste_sommet(depart, chemin), adjListe->sommet, destination, marqueur + 1, &i);
 	    }
@@ -315,7 +316,8 @@ Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, S
 	}
       while(adjListe != NULL)
 	{
-	  if( ((adjListe->sommet)->marque == 0) || ((adjListe->sommet)->marque > marqueur )) 
+	  if( (adjListe->sommet->marque == 0) ||
+	      (adjListe->sommet->marque > marqueur ))
 	    {
 	      voieSnd = recPlusCourt(G,  ajoute_liste_sommet(depart, chemin), adjListe->sommet, destination, marqueur + 1, &j);
 
@@ -334,7 +336,7 @@ Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, S
     {
       *distance = i  + 1;
       return voieMin;	
-    }else{
+    } else {
     *distance = 1000;
     return NULL;
   }
@@ -346,10 +348,11 @@ Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, S
  */
 void update_bordure_graphe(Graphe_zone *G, int **M, int nbCl)
 {
-  int *tab = NULL, i, j, iMax = 0;
+  int i, j, iMax = 0;
+  int *tab = NULL;
   Cellule_som *bordureElem = NULL;
-  Cellule_som *a = (G->mat[0][0])->sommet_adj; //recuperation de la liste des zones de bordure
-  Cellule_som *temp = a;
+  Cellule_som *a = G->mat[0][0]->sommet_adj; //recuperation de la liste des zones de bordure
+  Cellule_som *temp = a; // deux elements Cellule_Som* pour suppression quoi. genre double-parcoureurs
   Sommet *Zsg = G->mat[0][0];
   Liste_case *casesAAjouter = NULL, *elem = NULL;
 
@@ -411,7 +414,7 @@ void update_bordure_graphe(Graphe_zone *G, int **M, int nbCl)
 	  temp->suiv = a->suiv;
 	  free(a);
 	  a = temp->suiv;
-	  G->nbsom--; //On a suppime un sommet
+	  G->nbsom--; //On a supprime un sommet
 	  //On le retire du compteur
 
 	}

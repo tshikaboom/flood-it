@@ -8,10 +8,10 @@
 Liste_case *liste_init()
 {
   Liste_case *e = NULL;
-  e =(Liste_case*) malloc(sizeof(Liste_case));
-  if(e == NULL)
+  e = (Liste_case*) malloc(sizeof(Liste_case));
+  if (e == NULL)
     //Verifie que le malloc a fonctionne
-      exit(EXIT_FAILURE);
+    exit(EXIT_FAILURE);
 
   e->next=NULL; //Init liste suivante a NULL pour eviter une faute de segmentation
   
@@ -28,10 +28,11 @@ int liste_vide(Liste_case *l)
 //Rend vrai si l'element existe
 int liste_existe(Liste_case *l, int i, int j)
 {
-  while (l != NULL) {
-    if (l->i == i && l->j == j)
+  Liste_case *tmp = l;
+  while (tmp) {
+    if (tmp->i == i && tmp->j == j)
       return 1;
-    l = l->next;
+    tmp = tmp->next;
   }
   return 1;
 }

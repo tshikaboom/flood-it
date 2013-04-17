@@ -260,22 +260,26 @@ int StrategieLarge(Grille* Grille, int **M, int nbCases)
 	  G.mat[i] = (Sommet **) malloc(nbCases*sizeof(Sommet *));
 	// plutot ca non?
 
-	// initialisation des cases a NULL pour eviter tout segfault
+	// initialisation des cases a NULL
+	//   pour eviter tout segfault et erreur d'initialisation
 	for (i=0; i<nbCases; i++)
 	  for (j=0; j<nbCases; j++)
 	    G.mat[i][j] = NULL;
 	
 	assert(G.mat != NULL);	
 
+	// on remplit G
 	cree_graphe_zone(M, nbCases, &G);
+
+	// path est initialise ici
 	path = plusCourtChemin(&G, nbCases);
 
 	for(i = 0; path != NULL; i++)
+	  couleurs[i] = (path->sommet)->cl;	
+
+	for(; i >= 0; (i--, cpt++))
 	{
-		couleurs[i] = (path->sommet)->cl;	
-	}
-	for(; i >= 0; i--, cpt++)
-	{
+	  update_bordure_graphe(&G, M, couleurs[i]);
 	// Basculement dans couleurs[i] de la bordure ZSG
 	  // ZSG =  couleurs[i]
 	  // couleurs[0] contient la derniere couleur a attribuer a la ZSG, on commence a i = x > 0

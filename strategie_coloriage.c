@@ -245,14 +245,26 @@ int StrategieLarge(Grille* Grille, int **M, int nbCases)
 {
 	Graphe_zone G;
 	Cellule_som *path = NULL;
-	int i, couleurs[100] = {0};
+	int i, j, couleurs[100] = {0};
 	int cpt = 0;
 
 
 	G.som = NULL;
 	G.nbsom = 0;
 	G.mat = NULL;
-	G.mat = malloc(sizeof(Sommet*) * nbCases * nbCases);
+	/* oula.. c'est chaud la
+	G.mat = malloc(sizeof(Sommet***) * nbCases * nbCases);
+	*/
+	G.mat = (Sommet ***) malloc(nbCases*sizeof(Sommet **));
+	for(i=0; i<nbCases; i++)
+	  G.mat[i] = (Sommet **) malloc(nbCases*sizeof(Sommet *));
+	// plutot ca non?
+
+	// initialisation des cases a NULL pour eviter tout segfault
+	for (i=0; i<nbCases; i++)
+	  for (j=0; j<nbCases; j++)
+	    G.mat[i][j] = NULL;
+	
 	assert(G.mat != NULL);	
 
 	cree_graphe_zone(M, nbCases, &G);

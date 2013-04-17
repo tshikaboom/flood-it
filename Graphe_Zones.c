@@ -51,7 +51,7 @@ int adjacent(Sommet *s1, Sommet *s2)
   int bool=0;
   Cellule_som *ptr_courant = s1->sommet_adj;
 
-  while (ptr_courant->sommet != NULL)
+  while (ptr_courant)
     if (ptr_courant->sommet == s2) {
       bool=1;
 
@@ -61,7 +61,7 @@ int adjacent(Sommet *s1, Sommet *s2)
 
 
   ptr_courant = s2->sommet_adj;
-  while (ptr_courant->sommet != NULL)
+  while (ptr_courant)
     if (ptr_courant->sommet == s1) {
       if (bool==1) bool=3; // double-inclusion
       else bool=2; // s2 inclus dans s1
@@ -75,9 +75,10 @@ int adjacent(Sommet *s1, Sommet *s2)
 
 void cree_graphe_zone(int** M, int nbCases, Graphe_zone *G)
 {
+
   int i, j;
   Sommet *s = NULL, *s2 = NULL;
-  Cellule_som *l = NULL;
+  // ici on considere G->som = NULL de base
 
   // allocation des sommets de G
   for (i=0; i<nbCases; i++)
@@ -85,16 +86,15 @@ void cree_graphe_zone(int** M, int nbCases, Graphe_zone *G)
       if (G->mat[i][j] == NULL) {
 	s = (Sommet *) malloc(sizeof(Sommet)); // initalisation d'un sommet vide
 	s->nbcase_som = 0;
-	s->cases->next = NULL;
+	s->cases = liste_init();
 	s->sommet_adj = NULL;
-
+	G->mat[i][j] = s;
 	(G->nbsom)++;
 
-	l = (Cellule_som *) malloc(sizeof(Cellule_som)); //Chainage des Sommets du graphe
-	assert(l != NULL);
-	l->suiv = G->som;
-	G->som = l;
-	l=NULL;
+	/* ceci marche meme si G->som n'a pas de liste a la base
+	 * donc le "dernier" element sera a NULL
+	 */
+	G->som = ajoute_liste_sommet(s, G->som);
 
 	// on remplit les sommets en appelant trouve_zone
 	trouve_zone(M, i, j, s, G, nbCases);
@@ -261,7 +261,9 @@ int sommet_dans_bordure(Cellule_som *sommet, Bordure *bordure)
 Cellule_som *plusCourtChemin(Graphe_zone *G, int nbCases)
 {
   int i = 0;
-  Sommet *depart = G->mat[0][0], *destination = G->mat[nbCases][nbCases]; 
+  Sommet
+    *depart = G->mat[0][0],
+    *destination = G->mat[nbCases-1][nbCases-1];
   Cellule_som *chemin = ajoute_liste_sommet(depart, NULL);
 
   if(adjacent(depart, destination) != 0)
@@ -282,7 +284,10 @@ Cellule_som *plusCourtChemin(Graphe_zone *G, int nbCases)
 Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, Sommet *destination, int marqueur, int *distance)
 {
   int i = 0, j;
-  Cellule_som *voieMin = NULL, *voieSnd = NULL, *adjListe = depart->sommet_adj;
+  Cellule_som
+    *voieMin = NULL,
+    *voieSnd = NULL,
+    *adjListe = depart->sommet_adj;
 
   /*	if(depart == destination)
 	{
@@ -290,18 +295,17 @@ Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, S
 	*distance = 1;
 	return ajoute_liste_sommet(destination, chemin);
 	}*/
-  if(adjacent(depart, destination) != 0)
-    {
-      if((destination->marque != 0) && (destination->marque < marqueur )) //Il existe un chemin plus court
-	{
+  if (adjacent(depart, destination) != 0) {
+    if ((destination->marque != 0) &&
+	(destination->marque < marqueur )) { //Il existe un chemin plus court
 	  *distance = 1000; // hmmm..
 	  return NULL;
 	}
 
-      destination->marque = marqueur;
-      depart->marque = marqueur;
-      *distance = 2;
-      return ajoute_liste_sommet(destination, ajoute_liste_sommet(depart, chemin));
+    destination->marque = marqueur;
+    depart->marque = marqueur;
+    *distance = 2;
+    return ajoute_liste_sommet(destination, ajoute_liste_sommet(depart, chemin));
     }
   else
     {

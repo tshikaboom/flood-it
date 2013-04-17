@@ -55,7 +55,8 @@ int main(int argc,char**argv)
     printf("Flood-it: menu\n");
     printf("1 Strategie recursive\n");
     printf("2 Strategie iterative\n");
-    printf("3 Strategie rapide\n\n");
+    printf("3 Strategie rapide\n");
+    printf("4 Strategie max-bordures\n\n");
     printf("0 Quitter\n");
     printf(">> ");
     
@@ -108,12 +109,26 @@ int main(int argc,char**argv)
 
       Grille_free(&G);
       break;
+    case 4:
+            Gene_instance_genere_matrice(nbcase, nbcl, nivdif, graine, M);
+      Grille_init(nbcase,nbcl, 500,&G);
+      
+      Grille_ouvre_fenetre(G);
+      for (i=0;i<nbcase; i++ )
+	for (j=0;j<nbcase;j++)
+	  Grille_chg_case(G,i,j,M[i][j]);
+      printf("%d iterations au total\n",  StrategieLarge(G, M, nbcase));
+      Grille_redessine_Grille();
+      Grille_attente_touche();
+      Grille_ferme_fenetre();
+
+      Grille_free(&G);
     case 0:
       break;
     default:
       printf("choix?\n\n");
     }
-  } while (menuchoix < 0 || menuchoix > 3 || menuchoix != 0);
+  } while (menuchoix < 0 || menuchoix > 4 || menuchoix != 0);
  
 
   //  Grille_redessine_Grille();

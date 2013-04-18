@@ -50,7 +50,7 @@ Liste_case* liste_ajoute(Liste_case *oldListe, int i, int j)
 
 //Libere tous les element de la liste 
 void liste_detruit(Liste_case *l)
-{//Libere touts les elements d'une liste
+{ //Libere touts les elements d'une liste
   Liste_case *e = l, *aux;
   while(e != NULL) {
       aux = e->next;

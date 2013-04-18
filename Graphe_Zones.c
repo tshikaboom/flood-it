@@ -291,13 +291,13 @@ Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, S
     *voieSnd = NULL,
     *adjListe = depart->sommet_adj;
 
-	if(depart == destination)
-	{
-	destination->marque = marqueur;
-	*distance = 1;
-	return ajoute_liste_sommet(destination, chemin);
-	}
-  if (adjacent(depart, destination) != 0) {
+  if (depart == destination) { // cas d'arret de recursion
+    destination->marque = marqueur;
+    *distance = 1;
+    return ajoute_liste_sommet(destination, chemin);
+  }
+  
+  if (adjacent(depart, destination) != 0) { //
     if ((destination->marque != 0) && // si le chemin a deja ete marque
 	(destination->marque < marqueur )) { // s'il existe un chemin plus court
       *distance = 1000; // on marque notre chemin comme non-viable
@@ -310,19 +310,21 @@ Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, S
     return ajoute_liste_sommet(destination, ajoute_liste_sommet(depart, chemin));
   }
   else {
-    while (adjListe != NULL && i == 0) { //Pour le premier tour
+    while (adjListe && i == 0) { //Pour le premier tour
 
       // sommet non visite ou par une generation plus recente de recPlusCourt
       if ((adjListe->sommet->marque == 0) ||
 	  (adjListe->sommet->marque > marqueur ))
-	voieMin = recPlusCourt(G,  ajoute_liste_sommet(depart, chemin), adjListe->sommet, destination, marqueur + 1, &i);
+	voieMin = recPlusCourt(G,  ajoute_liste_sommet(depart, chemin),
+			       adjListe->sommet, destination, marqueur + 1, &i);
 	    
       adjListe = adjListe->suiv;
     }
-    while(adjListe != NULL) {
+    while (adjListe) {
       if ((adjListe->sommet->marque == 0) ||
 	  (adjListe->sommet->marque > marqueur )) {
-	voieSnd = recPlusCourt(G,  ajoute_liste_sommet(depart, chemin), adjListe->sommet, destination, marqueur + 1, &j);
+	voieSnd = recPlusCourt(G,  ajoute_liste_sommet(depart, chemin),
+			       adjListe->sommet, destination, marqueur + 1, &j);
 
 	if (j<i) { //Le chemin courant est plus court que le dernier chemin le plus court
 	  i = j;
@@ -334,10 +336,10 @@ Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, S
     }
   }
 
-  if(voieMin != NULL) { //Si on a un resultat valable
-      *distance = i  + 1;
-      return voieMin;	
-    }
+  if (voieMin != NULL) { //Si on a un resultat valable
+    *distance = i+1;
+    return voieMin;	
+  }
   else {
     *distance = 1000;
     return NULL;

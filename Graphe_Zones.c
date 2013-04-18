@@ -291,16 +291,16 @@ Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, S
     *voieSnd = NULL,
     *adjListe = depart->sommet_adj;
 
-  /*	if(depart == destination)
+	if(depart == destination)
 	{
 	destination->marque = marqueur;
 	*distance = 1;
 	return ajoute_liste_sommet(destination, chemin);
-	}*/
+	}
   if (adjacent(depart, destination) != 0) {
-    if ((destination->marque != 0) &&
-	(destination->marque < marqueur )) { //Il existe un chemin plus court
-      *distance = 1000; // hmmm..
+    if ((destination->marque != 0) && // si le chemin a deja ete marque
+	(destination->marque < marqueur )) { // s'il existe un chemin plus court
+      *distance = 1000; // on marque notre chemin comme non-viable
       return NULL;
     }
 

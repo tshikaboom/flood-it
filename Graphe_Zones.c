@@ -105,22 +105,19 @@ void cree_graphe_zone(int** M, int nbCases, Graphe_zone *G)
 
   // recherche des sommets adjacents
   for (i=0; i < nbCases; i++)
-    {
-      for(j=0; j < (nbCases - 1); j++)
-	/* Si deux cases adjacentes de la matrice pointent vers des Sommets
-	 * differents qui ne sont pas deja adjacents alors une relation
-	 * d'adjacence est ajoutée. Sinon, on passe aux cases suivantes
-	 */
-	{
-	  s = G->mat[i][j];
-	  s2 = G->mat[i][j+1];
-	  // si les sommets sont adjacents, on skip
-	  if (s == s2 || adjacent(s, s2) != 0)
-	    continue;
+    for(j=0; j < (nbCases - 1); j++) {
+      /* Si deux cases adjacentes de la matrice pointent vers des Sommets
+       * differents qui ne sont pas deja adjacents alors une relation
+       * d'adjacence est ajoutée. Sinon, on passe aux cases suivantes
+       */
+      s = G->mat[i][j];
+      s2 = G->mat[i][j+1];
+      // si les sommets sont adjacents, on skip
+      if (s == s2 || adjacent(s, s2) != 0)
+	continue;
 
-	  // Si les sommets sont diff et qu'ils ne sont pas deja adjacents
-	  ajoute_voisin(s, s2);
-	}
+      // Si les sommets sont diff et qu'ils ne sont pas deja adjacents
+      ajoute_voisin(s, s2);
     }
 }
 

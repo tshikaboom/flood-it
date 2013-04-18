@@ -278,14 +278,12 @@ int StrategieLarge(Grille* Grille, int **M, int nbCases)
 	  couleurs[i] = (path->sommet)->cl;	
 
 	for(; i >= 0; (i--, cpt++))
-	{
 	  update_bordure_graphe(&G, M, couleurs[i]);
 	// Basculement dans couleurs[i] de la bordure ZSG
 	  // ZSG =  couleurs[i]
 	  // couleurs[0] contient la derniere couleur a attribuer a la ZSG, on commence a i = x > 0
 	  // puis on decremente i. On incremente aussi cpt pout garde le compte du nombre de changements de couleur
 	  // Puis on additionnera plus bas cpt au nombre de changements renvoya par maxBordure
-	}
 
 	cpt += maxBordure(Grille, M, nbCases);
 	

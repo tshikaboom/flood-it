@@ -87,6 +87,8 @@ void cree_graphe_zone(int** M, int nbCases, Graphe_zone *G)
 	s = (Sommet *) malloc(sizeof(Sommet)); // initalisation d'un sommet vide
 	s->nbcase_som = 0;
 	s->cases = liste_init();
+	s->cases->i = i;	
+	s->cases->j = j;
 	s->sommet_adj = NULL;
 	G->mat[i][j] = s;
 	(G->nbsom)++;
@@ -298,49 +300,45 @@ Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, S
   if (adjacent(depart, destination) != 0) {
     if ((destination->marque != 0) &&
 	(destination->marque < marqueur )) { //Il existe un chemin plus court
-	  *distance = 1000; // hmmm..
-	  return NULL;
-	}
+      *distance = 1000; // hmmm..
+      return NULL;
+    }
 
     destination->marque = marqueur;
     depart->marque = marqueur;
     *distance = 2;
     return ajoute_liste_sommet(destination, ajoute_liste_sommet(depart, chemin));
+  }
+  else {
+    while (adjListe != NULL && i == 0) { //Pour le premier tour
+
+      // sommet non visite ou par une generation plus recente de recPlusCourt
+      if ((adjListe->sommet->marque == 0) ||
+	  (adjListe->sommet->marque > marqueur ))
+	voieMin = recPlusCourt(G,  ajoute_liste_sommet(depart, chemin), adjListe->sommet, destination, marqueur + 1, &i);
+	    
+      adjListe = adjListe->suiv;
     }
-  else
-    {
-      while (adjListe != NULL && i == 0) //Pour le premier tour
-	{
-	  if ((adjListe->sommet->marque == 0) ||
-	      (adjListe->sommet->marque > marqueur ))
-	    { //Sommet non visite ou par une generation plus recente de recPlusCourt
-	      voieMin = recPlusCourt(G,  ajoute_liste_sommet(depart, chemin), adjListe->sommet, destination, marqueur + 1, &i);
-	    }
-	  adjListe = adjListe->suiv;
-	}
-      while(adjListe != NULL)
-	{
-	  if( (adjListe->sommet->marque == 0) ||
-	      (adjListe->sommet->marque > marqueur ))
-	    {
-	      voieSnd = recPlusCourt(G,  ajoute_liste_sommet(depart, chemin), adjListe->sommet, destination, marqueur + 1, &j);
+    while(adjListe != NULL) {
+      if ((adjListe->sommet->marque == 0) ||
+	  (adjListe->sommet->marque > marqueur )) {
+	voieSnd = recPlusCourt(G,  ajoute_liste_sommet(depart, chemin), adjListe->sommet, destination, marqueur + 1, &j);
 
-	      if(j < i) //Le chemin courant est plus court que le dernier chemin le plus court
-		{
-		  i = j;
-		  voieMin = voieSnd;
-		}
-	    }
-
-	  adjListe = adjListe->suiv;
+	if (j<i) { //Le chemin courant est plus court que le dernier chemin le plus court
+	  i = j;
+	  voieMin = voieSnd;
 	}
+      }
+
+      adjListe = adjListe->suiv;
     }
+  }
 
-  if(voieMin != NULL) //Si on a un resultat valable
-    {
+  if(voieMin != NULL) { //Si on a un resultat valable
       *distance = i  + 1;
       return voieMin;	
-    } else {
+    }
+  else {
     *distance = 1000;
     return NULL;
   }
@@ -355,28 +353,27 @@ void update_bordure_graphe(Graphe_zone *G, int **M, int nbCl)
   int i, j, iMax = 0;
   int *tab = NULL;
   Cellule_som *bordureElem = NULL;
-  Cellule_som *a = G->mat[0][0]->sommet_adj; //recuperation de la liste des zones de bordure
-  Cellule_som *temp = a; // deux elements Cellule_Som* pour suppression quoi. genre double-parcoureurs
+  
+  //recuperation de la liste des zones de bordure
+  Cellule_som *a = G->mat[0][0]->sommet_adj;
+  // deux elements Cellule_Som* pour suppression
+  Cellule_som *temp = a;
   Sommet *Zsg = G->mat[0][0];
   Liste_case *casesAAjouter = NULL, *elem = NULL;
 
-  tab = malloc(sizeof(int) * nbCl);
+  tab = (int *) malloc(sizeof(int) * nbCl);
   assert(tab != NULL);
 
   for(i = 0; i < nbCl; i++)
-    {
       tab[i] = 0;
-    }
 
-  while(a != NULL)
-    {
+  while(a != NULL) {
       tab[(a->sommet)->cl]++;
       a = a->suiv;
     }
   for(i = 1; i < nbCl; i++)
-    {
       iMax = tab[i] > tab[iMax] ? i : iMax;
-    }
+
   //iMax -> indice de la couleur la plus presente = valeur de la couleur
   changeCouleurZsg(G, M, iMax);
 
@@ -387,47 +384,44 @@ void update_bordure_graphe(Graphe_zone *G, int **M, int nbCl)
   a = (G->mat[0][0])->sommet_adj;
   elem = Zsg->cases;
   while(elem->next != NULL)
-    {
       elem = elem->next;
-    }
 
-  while(a != NULL)
-    {	
-      if((a->sommet)->cl == iMax)
-	{
-	  bordureElem = a->sommet->sommet_adj;
-	  while(bordureElem != NULL)//Ajout des adjacences
-	    {
-	      ajoute_voisin(a->sommet, bordureElem->sommet);
-	      bordureElem = bordureElem->suiv;
-	    }	
-	  //On enleve a de la liste d'adjacence de Zsg
-
-	  //Recuperation des cases
-	  casesAAjouter = a->sommet->cases;
-	  elem->next = casesAAjouter;
-	  while(elem->next != NULL)
-	    {
-	      i = elem->i;//Ajoute de Zsg dans la matrice de Sommets
-	      j = elem->j; //Pour les nouvelles cases
-	      G->mat[i][j] = Zsg;
-	      elem = elem->next;
-	    }
-
-	  //Destruction du sommet
-	  temp->suiv = a->suiv;
-	  free(a);
-	  a = temp->suiv;
-	  G->nbsom--; //On a supprime un sommet
-	  //On le retire du compteur
-
-	}
-      else {
-	//Destruction du sommet
-	temp = a;
-	a = a->suiv;
+  while(a != NULL) {
+    
+    if((a->sommet)->cl == iMax) {
+      bordureElem = a->sommet->sommet_adj;
+      
+      while(bordureElem != NULL) { //Ajout des adjacences
+	ajoute_voisin(a->sommet, bordureElem->sommet);
+	bordureElem = bordureElem->suiv;
       }
+      
+      //On enleve a de la liste d'adjacence de Zsg
+      //Recuperation des cases
+      casesAAjouter = a->sommet->cases;
+      elem->next = casesAAjouter;
+      
+      while (elem->next != NULL) {
+	i = elem->i;//Ajoute de Zsg dans la matrice de Sommets
+	j = elem->j; //Pour les nouvelles cases
+	G->mat[i][j] = Zsg;
+	elem = elem->next;
+      }
+
+      //Destruction du sommet
+      temp->suiv = a->suiv;
+      free(a);
+      a = temp->suiv;
+      G->nbsom--; //On a supprime un sommet
+      //On le retire du compteur
+
     }
+    else {
+      //Destruction du sommet
+      temp = a;
+      a = a->suiv;
+    }
+  }
 }
 /* On prend un graphe et une couleur
  *	On change la couleur du sommet de la Zsg
@@ -439,8 +433,7 @@ void changeCouleurZsg(Graphe_zone *G, int ** M,  int cl)
   int i, j;
   (G->mat[0][0])->cl = cl;
 
-  while(elem != NULL)
-    {
+  while(elem != NULL) {
       i = elem->i;
       j = elem->j;
       M[i][j] = cl;

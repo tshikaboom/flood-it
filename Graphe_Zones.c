@@ -268,8 +268,7 @@ Cellule_som *plusCourtChemin(Graphe_zone *G, int nbCases)
     *destination = G->mat[nbCases-1][nbCases-1];
   Cellule_som *chemin = ajoute_liste_sommet(depart, NULL);
 
-  if(adjacent(depart, destination) != 0)
-    {
+  if(adjacent(depart, destination) != 0) {
       chemin = ajoute_liste_sommet(destination, chemin);
       return chemin;
     }
@@ -285,7 +284,7 @@ Cellule_som *plusCourtChemin(Graphe_zone *G, int nbCases)
  */
 Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, Sommet *destination, int marqueur, int *distance)
 {
-  int i = 0, j;
+  int i = 0, j = 0;
   Cellule_som
     *voieMin = NULL,
     *voieSnd = NULL,
@@ -297,10 +296,15 @@ Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, S
     return ajoute_liste_sommet(destination, chemin);
   }
   
-  if (adjacent(depart, destination) != 0) { //
+  if (adjacent(depart, destination) != 0) {
     if ((destination->marque != 0) && // si le chemin a deja ete marque
 	(destination->marque < marqueur )) { // s'il existe un chemin plus court
       *distance = 1000; // on marque notre chemin comme non-viable
+      
+      /* donc si depart et destination sont adjacents, mais qu'on a parcouru
+	 un chemin non-optimal (marqueur l'indique), on recommence en mettant
+	 distance a 1000 et en essayant d'atteindre un autre etat de recursion
+      */
       return NULL;
     }
 
@@ -310,7 +314,8 @@ Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, S
     return ajoute_liste_sommet(destination, ajoute_liste_sommet(depart, chemin));
   }
   else {
-    while (adjListe && i == 0) { //Pour le premier tour
+    while (adjListe &&
+	   *distance==0) { // condition distance==0 pour le premier tour
 
       // sommet non visite ou par une generation plus recente de recPlusCourt
       if ((adjListe->sommet->marque == 0) ||
@@ -320,9 +325,9 @@ Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, S
 	    
       adjListe = adjListe->suiv;
     }
-    while (adjListe) {
-      if ((adjListe->sommet->marque == 0) ||
-	  (adjListe->sommet->marque > marqueur )) {
+    while (adjListe) { // cas de recursion normale
+      if ((adjListe->sommet->marque == 0) || // sommet non parcouru
+	  (adjListe->sommet->marque > marqueur )) { // sommet parcouru mais pas optimalement
 	voieSnd = recPlusCourt(G,  ajoute_liste_sommet(depart, chemin),
 			       adjListe->sommet, destination, marqueur + 1, &j);
 
@@ -336,7 +341,7 @@ Cellule_som *recPlusCourt(Graphe_zone *G, Cellule_som *chemin, Sommet *depart, S
     }
   }
 
-  if (voieMin != NULL) { //Si on a un resultat valable
+  if (voieMin != NULL) { // si on a un resultat valable
     *distance = i+1;
     return voieMin;	
   }
@@ -354,12 +359,14 @@ void update_bordure_graphe(Graphe_zone *G, int **M, int nbCl)
 {
   int i, j, iMax = 0;
   int *tab = NULL;
-  Cellule_som *bordureElem = NULL;
-  
+
   //recuperation de la liste des zones de bordure
-  Cellule_som *a = G->mat[0][0]->sommet_adj;
+  Cellule_som *bordureElem = NULL;
+
   // deux elements Cellule_Som* pour suppression
+  Cellule_som *a = G->mat[0][0]->sommet_adj;
   Cellule_som *temp = a;
+  
   Sommet *Zsg = G->mat[0][0];
   Liste_case *casesAAjouter = NULL, *elem = NULL;
 
@@ -373,15 +380,16 @@ void update_bordure_graphe(Graphe_zone *G, int **M, int nbCl)
       tab[(a->sommet)->cl]++;
       a = a->suiv;
     }
+  
   for(i = 1; i < nbCl; i++)
       iMax = tab[i] > tab[iMax] ? i : iMax;
 
-  //iMax -> indice de la couleur la plus presente = valeur de la couleur
+  // iMax -> indice de la couleur la plus presente = valeur de la couleur
   changeCouleurZsg(G, M, iMax);
 
-  //On supprime toutes les zones de la bordure de la meme couleur que iMax
-  //On ajoute a la zsg les cases des zones supprimees et leurs adjacences
-  //on a le nombre de zones dans tab[iMax]
+  // on supprime toutes les zones de la bordure de la meme couleur que iMax
+  // on ajoute a la zsg les cases des zones supprimees et leurs adjacences
+  // on a le nombre de zones dans tab[iMax]
 
   a = (G->mat[0][0])->sommet_adj;
   elem = Zsg->cases;
@@ -393,38 +401,41 @@ void update_bordure_graphe(Graphe_zone *G, int **M, int nbCl)
     if((a->sommet)->cl == iMax) {
       bordureElem = a->sommet->sommet_adj;
       
-      while(bordureElem != NULL) { //Ajout des adjacences
+      while (bordureElem) { // ajout des adjacences
 	ajoute_voisin(a->sommet, bordureElem->sommet);
 	bordureElem = bordureElem->suiv;
       }
       
-      //On enleve a de la liste d'adjacence de Zsg
-      //Recuperation des cases
+      // on enleve a de la liste d'adjacence de Zsg
+      // recuperation des cases
       casesAAjouter = a->sommet->cases;
       elem->next = casesAAjouter;
       
-      while (elem->next != NULL) {
-	i = elem->i;//Ajoute de Zsg dans la matrice de Sommets
-	j = elem->j; //Pour les nouvelles cases
+      while (elem->next) {
+	i = elem->i; // ajoute de Zsg dans la matrice de Sommets
+	j = elem->j; // pour les nouvelles cases
 	G->mat[i][j] = Zsg;
 	elem = elem->next;
       }
 
-      //Destruction du sommet
+      // destruction du sommet
       temp->suiv = a->suiv;
-      free(a);
+      free(a); //on a supprime un sommet
       a = temp->suiv;
-      G->nbsom--; //On a supprime un sommet
-      //On le retire du compteur
+      G->nbsom--; // on le retire du compteur
+
 
     }
     else {
-      //Destruction du sommet
+      // destruction du sommet
       temp = a;
       a = a->suiv;
     }
   }
 }
+
+
+
 /* On prend un graphe et une couleur
  *	On change la couleur du sommet de la Zsg
  *	On parcourt toutes les cases de la Zsg et on leur donne leur nouvelle couleur

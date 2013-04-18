@@ -3,6 +3,7 @@
 
 #include <assert.h>
 
+typedef struct s_bordure Bordure;
 typedef struct sommet Sommet;
 
 /* Element d'une liste de Sommets */
@@ -45,7 +46,11 @@ struct s_bordure {
   Cellule_som **tab; // tableau de listes de Cellule_som figurant dans la case [i][j]
 };
 
-typedef struct s_bordure Bordure;
+
+
+
+
+
 
 Cellule_som *ajoute_liste_sommet(Sommet *ptrsommet, Cellule_som *cell_som);
 

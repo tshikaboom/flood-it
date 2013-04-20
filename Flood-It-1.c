@@ -56,8 +56,8 @@ int main(int argc,char**argv)
     printf("1 Strategie recursive\n");
     printf("2 Strategie iterative\n");
     printf("3 Strategie rapide\n");
-    printf("4 Strategie max-bordures\n\n");
-    printf("5 Strategie largeur");
+    printf("4 Strategie max-bordures\n");
+    printf("5 Strategie largeur\n\n");
     printf("0 Quitter\n");
     printf(">> ");
     

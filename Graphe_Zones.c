@@ -233,7 +233,7 @@ Bordure *bordure_init(int nbcl)
   if (!(nvbordure->taille_liste)) return NULL;
 
   // initialisation du tableau des tailles de listes
-  for (i=0; i<nbcl; i++) nvbordure->taille_liste = 0;
+  for (i=0; i<nbcl; i++) nvbordure->taille_liste[i] = 0;
 
 
   nvbordure->nbcl = nbcl;
